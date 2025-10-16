@@ -16,7 +16,6 @@ class ProductRepository(private val context: Context) {
 
     private val productApiService = RetrofitClient.getProductApiService(context.applicationContext)
 
-    // Revertido: Ya no necesita un parámetro de búsqueda
     suspend fun getProducts(): Response<List<Product>> {
         return productApiService.getProducts()
     }
@@ -29,7 +28,6 @@ class ProductRepository(private val context: Context) {
         val contentResolver = context.contentResolver
         val mimeType = contentResolver.getType(imageUri)
         val fileExtension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)
-
         val fileName = "upload_${System.currentTimeMillis()}.$fileExtension"
         val file = File(context.cacheDir, fileName)
 
@@ -40,10 +38,13 @@ class ProductRepository(private val context: Context) {
         }
 
         val requestFile = file.asRequestBody(mimeType?.toMediaTypeOrNull())
-        val imagePart = MultipartBody.Part.createFormData(
-            "image", file.name, requestFile
-        )
+        val imagePart = MultipartBody.Part.createFormData("image", file.name, requestFile)
 
         return productApiService.createProduct(imagePart, namePart, pricePart, stockPart)
+    }
+
+    // Nueva función para borrar un producto
+    suspend fun deleteProduct(productId: Int): Response<Unit> {
+        return productApiService.deleteProduct(productId)
     }
 }

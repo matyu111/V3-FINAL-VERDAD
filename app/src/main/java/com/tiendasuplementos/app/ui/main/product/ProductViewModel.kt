@@ -23,6 +23,14 @@ sealed class CreationState {
     object Idle : CreationState()
 }
 
+sealed class DeletionState {
+    object Loading : DeletionState()
+    // Ahora Success devolverá el ID del producto borrado
+    data class Success(val productId: Int) : DeletionState()
+    data class Error(val message: String) : DeletionState()
+    object Idle : DeletionState()
+}
+
 class ProductViewModel(application: Application) : AndroidViewModel(application) {
 
     private val productRepository = ProductRepository(application.applicationContext)
@@ -33,17 +41,18 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
     private val _creationState = MutableLiveData<CreationState>(CreationState.Idle)
     val creationState: LiveData<CreationState> = _creationState
 
-    // Variable para guardar la lista completa de productos
+    private val _deletionState = MutableLiveData<DeletionState>(DeletionState.Idle)
+    val deletionState: LiveData<DeletionState> = _deletionState
+
     private var fullProductList: List<Product> = listOf()
 
-    // Carga los productos desde la API la primera vez
     fun fetchProducts() {
         _productListState.value = ProductListState.Loading
         viewModelScope.launch {
             try {
                 val response = productRepository.getProducts()
                 if (response.isSuccessful && response.body() != null) {
-                    fullProductList = response.body()!! // Guardamos la lista completa
+                    fullProductList = response.body()!!
                     _productListState.postValue(ProductListState.Success(fullProductList))
                 } else {
                     _productListState.postValue(ProductListState.Error("Error al cargar productos. Código: ${response.code()}"))
@@ -54,12 +63,10 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    // CORREGIDO: Ahora sí filtra la lista localmente
     fun searchProducts(query: String?) {
         val filteredList = if (query.isNullOrBlank()) {
-            fullProductList // Si la búsqueda está vacía, devuelve la lista completa
+            fullProductList
         } else {
-            // Filtra la lista en memoria (rápido)
             fullProductList.filter { product ->
                 product.name.contains(query, ignoreCase = true)
             }
@@ -83,7 +90,35 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
+    fun deleteProduct(productId: Int) {
+        _deletionState.value = DeletionState.Loading
+        viewModelScope.launch {
+            try {
+                val response = productRepository.deleteProduct(productId)
+                if (response.isSuccessful) {
+                    // En caso de éxito, actualizamos la lista localmente
+                    removeProductFromLocalList(productId)
+                    _deletionState.postValue(DeletionState.Success(productId))
+                } else {
+                    _deletionState.postValue(DeletionState.Error("Error al borrar el producto."))
+                }
+            } catch (e: Exception) {
+                _deletionState.postValue(DeletionState.Error("Error de red: ${e.message}"))
+            }
+        }
+    }
+
+    // Nueva función para eliminar el producto de la lista en memoria
+    private fun removeProductFromLocalList(productId: Int) {
+        fullProductList = fullProductList.filter { it.id != productId }
+        _productListState.value = ProductListState.Success(fullProductList)
+    }
+
     fun resetCreationState() {
         _creationState.value = CreationState.Idle
+    }
+
+    fun resetDeletionState() {
+        _deletionState.value = DeletionState.Idle
     }
 }

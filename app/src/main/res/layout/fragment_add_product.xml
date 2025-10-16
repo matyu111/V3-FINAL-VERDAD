@@ -11,7 +11,7 @@
         android:text="Crear Nuevo Producto"
         android:textSize="28sp"
         android:textStyle="bold"
-        android:layout_marginBottom="32dp" />
+        android:layout_marginBottom="24dp" />
 
     <ImageView
         android:id="@+id/imageViewProductPreview"

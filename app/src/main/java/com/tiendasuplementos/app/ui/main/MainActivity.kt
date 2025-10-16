@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigation: BottomNavigationView = findViewById(R.id.bottom_navigation)
         bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
-        // Cargar el fragment inicial
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, ProductListFragment())
@@ -41,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (selectedFragment != null) {
-            supportFragmentManager.beginTransaction() // Corregido aquí
+            supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, selectedFragment)
                 .commit()
         }

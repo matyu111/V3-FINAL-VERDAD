@@ -55,12 +55,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:layout_marginBottom="16dp"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/productNameTextView"
             app:layout_constraintTop_toBottomOf="@id/productPriceTextView"
             tools:text="Stock: 15 unidades" />
+
+        <!-- TextView para mostrar el ID del producto -->
+        <TextView
+            android:id="@+id/productIdTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="16dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/productNameTextView"
+            app:layout_constraintTop_toBottomOf="@id/productStockTextView"
+            tools:text="ID: 12345" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

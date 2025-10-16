@@ -74,12 +74,12 @@ class AddProductFragment : Fragment() {
             when (state) {
                 is CreationState.Success -> {
                     Toast.makeText(requireContext(), "Producto creado con éxito", Toast.LENGTH_SHORT).show()
-                    productViewModel.resetCreationState() // Resetea el estado
-                    parentFragmentManager.popBackStack() // Vuelve a la lista
+                    productViewModel.resetCreationState()
+                    parentFragmentManager.popBackStack()
                 }
                 is CreationState.Error -> {
                     Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
-                    productViewModel.resetCreationState() // Resetea el estado
+                    productViewModel.resetCreationState()
                 }
                 else -> {}
             }

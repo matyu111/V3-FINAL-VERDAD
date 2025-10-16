@@ -9,9 +9,9 @@ data class Product(
     val price: Double,
     val stock: Int,
     @SerializedName("image")
-    val image: ImageUrl
+    val image: ImageUrl? // Revertido: Vuelve a ser un único objeto, y opcional por seguridad
 )
 
 data class ImageUrl(
-    val url: String
+    val url: String?
 )

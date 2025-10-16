@@ -21,6 +21,7 @@ class ProductAdapter : ListAdapter<Product, ProductAdapter.ProductViewHolder>(Pr
         private val priceTextView: TextView = itemView.findViewById(R.id.productPriceTextView)
         private val stockTextView: TextView = itemView.findViewById(R.id.productStockTextView)
         private val imageView: ImageView = itemView.findViewById(R.id.productImageView)
+        private val idTextView: TextView = itemView.findViewById(R.id.productIdTextView) // Nuevo TextView
 
         fun bind(product: Product) {
             nameTextView.text = product.name
@@ -29,11 +30,14 @@ class ProductAdapter : ListAdapter<Product, ProductAdapter.ProductViewHolder>(Pr
             priceTextView.text = format.format(product.price)
 
             stockTextView.text = "Stock: ${product.stock} unidades"
+            idTextView.text = "ID: ${product.id}" // Mostramos el ID
 
-            imageView.load(product.image.url) {
-                placeholder(R.drawable.ic_launcher_background)
-                error(R.drawable.ic_launcher_foreground)
-            }
+            product.image?.url?.let {
+                imageView.load(it) {
+                    placeholder(R.drawable.ic_launcher_background)
+                    error(R.drawable.ic_launcher_foreground)
+                }
+            } ?: imageView.setImageDrawable(null)
         }
     }
 
