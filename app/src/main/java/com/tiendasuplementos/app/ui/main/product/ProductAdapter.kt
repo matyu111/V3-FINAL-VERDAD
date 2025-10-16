@@ -18,19 +18,21 @@ class ProductAdapter : ListAdapter<Product, ProductAdapter.ProductViewHolder>(Pr
 
     class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val nameTextView: TextView = itemView.findViewById(R.id.productNameTextView)
+        private val descriptionTextView: TextView = itemView.findViewById(R.id.productDescriptionTextView) // Nuevo TextView
         private val priceTextView: TextView = itemView.findViewById(R.id.productPriceTextView)
         private val stockTextView: TextView = itemView.findViewById(R.id.productStockTextView)
         private val imageView: ImageView = itemView.findViewById(R.id.productImageView)
-        private val idTextView: TextView = itemView.findViewById(R.id.productIdTextView) // Nuevo TextView
+        private val idTextView: TextView = itemView.findViewById(R.id.productIdTextView)
 
         fun bind(product: Product) {
             nameTextView.text = product.name
+            descriptionTextView.text = product.description // Mostramos la descripción
 
             val format: NumberFormat = NumberFormat.getCurrencyInstance(Locale("es", "CL"))
             priceTextView.text = format.format(product.price)
 
             stockTextView.text = "Stock: ${product.stock} unidades"
-            idTextView.text = "ID: ${product.id}" // Mostramos el ID
+            idTextView.text = "ID: ${product.id}"
 
             product.image?.url?.let {
                 imageView.load(it) {

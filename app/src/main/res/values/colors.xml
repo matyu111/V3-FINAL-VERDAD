@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Nueva Paleta de Colores Fitness -->
+    <color name="fitness_dark_background">#121212</color> <!-- Fondo oscuro principal -->
+    <color name="fitness_surface">#1E1E1E</color> <!-- Superficies como las tarjetas -->
+    <color name="fitness_primary">#BB86FC</color> <!-- Color primario (morado vibrante) -->
+    <color name="fitness_primary_variant">#3700B3</color> <!-- Variante más oscura del primario -->
+    <color name="fitness_secondary">#03DAC6</color> <!-- Color de acento (turquesa) -->
+    <color name="fitness_on_primary">#000000</color> <!-- Texto sobre el color primario -->
+    <color name="fitness_on_surface">#FFFFFF</color> <!-- Texto sobre las superficies oscuras -->
+
 </resources>

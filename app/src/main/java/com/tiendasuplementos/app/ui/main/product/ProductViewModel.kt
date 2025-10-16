@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.tiendasuplementos.app.data.remote.dto.CreateProductRequest
 import com.tiendasuplementos.app.data.remote.dto.Product
 import com.tiendasuplementos.app.data.repository.ProductRepository
 import kotlinx.coroutines.launch
@@ -25,7 +26,6 @@ sealed class CreationState {
 
 sealed class DeletionState {
     object Loading : DeletionState()
-    // Ahora Success devolverá el ID del producto borrado
     data class Success(val productId: Int) : DeletionState()
     data class Error(val message: String) : DeletionState()
     object Idle : DeletionState()
@@ -74,11 +74,12 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
         _productListState.value = ProductListState.Success(filteredList)
     }
 
-    fun createProduct(name: String, price: Double, stock: Int, imageUri: Uri) {
+    fun createProduct(name: String, description: String, price: Double, stock: Int, imageUri: Uri) {
         _creationState.value = CreationState.Loading
         viewModelScope.launch {
             try {
-                val response = productRepository.createProduct(name, price, stock, imageUri)
+                val request = CreateProductRequest(name, description, price, stock)
+                val response = productRepository.createProduct(name, description, price, stock, imageUri)
                 if (response.isSuccessful) {
                     _creationState.postValue(CreationState.Success)
                 } else {
@@ -96,7 +97,6 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
             try {
                 val response = productRepository.deleteProduct(productId)
                 if (response.isSuccessful) {
-                    // En caso de éxito, actualizamos la lista localmente
                     removeProductFromLocalList(productId)
                     _deletionState.postValue(DeletionState.Success(productId))
                 } else {
@@ -108,7 +108,6 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    // Nueva función para eliminar el producto de la lista en memoria
     private fun removeProductFromLocalList(productId: Int) {
         fullProductList = fullProductList.filter { it.id != productId }
         _productListState.value = ProductListState.Success(fullProductList)

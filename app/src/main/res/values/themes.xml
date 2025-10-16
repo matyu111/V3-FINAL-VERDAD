@@ -1,6 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <style name="Theme.Tiendasuplementos" parent="Theme.MaterialComponents.Light.NoActionBar" />
-
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Tema Base de la Aplicación -->
+    <style name="Theme.Tiendasuplementos" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Colores Primarios -->
+        <item name="colorPrimary">@color/fitness_primary</item>
+        <item name="colorPrimaryVariant">@color/fitness_primary_variant</item>
+        <item name="colorOnPrimary">@color/fitness_on_primary</item>
+        <!-- Colores Secundarios -->
+        <item name="colorSecondary">@color/fitness_secondary</item>
+        <item name="colorSecondaryVariant">@color/fitness_secondary</item>
+        <item name="colorOnSecondary">@color/fitness_on_primary</item>
+        <!-- Color de Fondo y Superficies -->
+        <item name="android:colorBackground">@color/fitness_dark_background</item>
+        <item name="colorSurface">@color/fitness_surface</item>
+        <item name="colorOnBackground">@color/fitness_on_surface</item>
+        <item name="colorOnSurface">@color/fitness_on_surface</item>
+        <!-- Color de la Barra de Estado -->
+        <item name="android:statusBarColor">@color/fitness_dark_background</item>
+    </style>
 </resources>

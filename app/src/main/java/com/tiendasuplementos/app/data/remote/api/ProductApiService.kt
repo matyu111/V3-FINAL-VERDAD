@@ -19,13 +19,13 @@ interface ProductApiService {
     @Multipart
     @POST("product")
     suspend fun createProduct(
-        @Part image: MultipartBody.Part, 
+        @Part image: MultipartBody.Part,
         @Part("name") name: RequestBody,
+        @Part("description") description: RequestBody,
         @Part("price") price: RequestBody,
         @Part("stock") stock: RequestBody
     ): Response<Product>
 
-    // Nuevo endpoint para borrar un producto por su ID
     @DELETE("product/{id}")
     suspend fun deleteProduct(@Path("id") productId: Int): Response<Unit>
 }

@@ -20,14 +20,17 @@ class ProductRepository(private val context: Context) {
         return productApiService.getProducts()
     }
 
-    suspend fun createProduct(name: String, price: Double, stock: Int, imageUri: Uri): Response<Product> {
+    // CORREGIDO: Acepta y procesa UNA SOLA Uri
+    suspend fun createProduct(name: String, description: String, price: Double, stock: Int, imageUri: Uri): Response<Product> {
         val namePart = name.toRequestBody("text/plain".toMediaTypeOrNull())
+        val descriptionPart = description.toRequestBody("text/plain".toMediaTypeOrNull())
         val pricePart = price.toString().toRequestBody("text/plain".toMediaTypeOrNull())
         val stockPart = stock.toString().toRequestBody("text/plain".toMediaTypeOrNull())
 
         val contentResolver = context.contentResolver
         val mimeType = contentResolver.getType(imageUri)
         val fileExtension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)
+
         val fileName = "upload_${System.currentTimeMillis()}.$fileExtension"
         val file = File(context.cacheDir, fileName)
 
@@ -40,10 +43,10 @@ class ProductRepository(private val context: Context) {
         val requestFile = file.asRequestBody(mimeType?.toMediaTypeOrNull())
         val imagePart = MultipartBody.Part.createFormData("image", file.name, requestFile)
 
-        return productApiService.createProduct(imagePart, namePart, pricePart, stockPart)
+        // Llamada correcta con todos los parámetros para una sola imagen
+        return productApiService.createProduct(imagePart, namePart, descriptionPart, pricePart, stockPart)
     }
 
-    // Nueva función para borrar un producto
     suspend fun deleteProduct(productId: Int): Response<Unit> {
         return productApiService.deleteProduct(productId)
     }

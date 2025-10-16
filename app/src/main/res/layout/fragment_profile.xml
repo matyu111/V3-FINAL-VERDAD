@@ -4,12 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    android:padding="32dp">
+    android:padding="32dp"
+    android:background="@color/fitness_dark_background">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Mi Perfil"
+        android:textColor="@color/fitness_on_surface"
         android:textSize="34sp"
         android:textStyle="bold"
         android:layout_marginBottom="24dp" />
@@ -17,6 +19,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/fitness_on_surface"
         android:text="Nombre" />
 
     <TextView
@@ -24,12 +27,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Cargando..."
+        android:textColor="@color/fitness_on_surface"
         android:textSize="20sp"
         android:layout_marginBottom="16dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/fitness_on_surface"
         android:text="Correo Electrónico" />
 
     <TextView
@@ -37,6 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Cargando..."
+        android:textColor="@color/fitness_on_surface"
         android:textSize="20sp"
         android:layout_marginBottom="24dp"/>
 
@@ -53,6 +59,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="ID del producto a borrar"
+        android:textColorHint="@android:color/darker_gray"
+        android:textColor="@color/fitness_on_surface"
         android:inputType="number" />
 
     <Button

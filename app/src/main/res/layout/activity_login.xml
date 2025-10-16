@@ -6,12 +6,22 @@
     android:orientation="vertical"
     android:gravity="center"
     android:padding="24dp"
+    android:background="@color/fitness_dark_background"
     tools:context=".ui.auth.LoginActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Tienda de Suplementos"
+        android:textColor="@color/fitness_on_surface"
+        android:textSize="24sp"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Iniciar Sesión"
+        android:textColor="@color/fitness_on_surface"
         android:textSize="32sp"
         android:textStyle="bold"
         android:layout_marginBottom="32dp"/>
@@ -21,6 +31,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Correo electrónico"
+        android:textColorHint="@android:color/darker_gray"
+        android:textColor="@color/fitness_on_surface"
         android:inputType="textEmailAddress"
         android:layout_marginBottom="16dp"/>
 
@@ -29,6 +41,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Contraseña"
+        android:textColorHint="@android:color/darker_gray"
+        android:textColor="@color/fitness_on_surface"
         android:inputType="textPassword"
         android:layout_marginBottom="24dp"/>
 

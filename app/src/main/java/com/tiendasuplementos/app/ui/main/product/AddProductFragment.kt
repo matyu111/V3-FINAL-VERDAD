@@ -44,6 +44,7 @@ class AddProductFragment : Fragment() {
         imageViewPreview = view.findViewById(R.id.imageViewProductPreview)
         val selectImageButton: Button = view.findViewById(R.id.buttonSelectImage)
         val nameEditText: EditText = view.findViewById(R.id.editTextProductName)
+        val descriptionEditText: EditText = view.findViewById(R.id.editTextProductDescription)
         val priceEditText: EditText = view.findViewById(R.id.editTextProductPrice)
         val stockEditText: EditText = view.findViewById(R.id.editTextProductStock)
         val createButton: Button = view.findViewById(R.id.buttonCreateProduct)
@@ -56,11 +57,12 @@ class AddProductFragment : Fragment() {
 
         createButton.setOnClickListener {
             val name = nameEditText.text.toString()
+            val description = descriptionEditText.text.toString()
             val price = priceEditText.text.toString().toDoubleOrNull()
             val stock = stockEditText.text.toString().toIntOrNull()
 
-            if (name.isNotBlank() && price != null && stock != null && selectedImageUri != null) {
-                productViewModel.createProduct(name, price, stock, selectedImageUri!!)
+            if (name.isNotBlank() && description.isNotBlank() && price != null && stock != null && selectedImageUri != null) {
+                productViewModel.createProduct(name, description, price, stock, selectedImageUri!!)
             } else {
                 Toast.makeText(requireContext(), "Por favor, completa todos los campos y selecciona una imagen", Toast.LENGTH_SHORT).show()
             }

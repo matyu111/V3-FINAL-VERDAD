@@ -3,12 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:padding="24dp"
+    android:background="@color/fitness_dark_background">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Crear Nuevo Producto"
+        android:textColor="@color/fitness_on_surface"
         android:textSize="28sp"
         android:textStyle="bold"
         android:layout_marginBottom="24dp" />
@@ -34,7 +36,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Nombre del producto"
+        android:textColorHint="@android:color/darker_gray"
+        android:textColor="@color/fitness_on_surface"
         android:inputType="textCapWords"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- EditText para la Descripción -->
+    <EditText
+        android:id="@+id/editTextProductDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Descripción del producto"
+        android:textColorHint="@android:color/darker_gray"
+        android:textColor="@color/fitness_on_surface"
+        android:inputType="textMultiLine"
         android:layout_marginBottom="16dp"/>
 
     <EditText
@@ -42,6 +57,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Precio"
+        android:textColorHint="@android:color/darker_gray"
+        android:textColor="@color/fitness_on_surface"
         android:inputType="numberDecimal"
         android:layout_marginBottom="16dp"/>
 
@@ -50,6 +67,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Stock"
+        android:textColorHint="@android:color/darker_gray"
+        android:textColor="@color/fitness_on_surface"
         android:inputType="number"
         android:layout_marginBottom="24dp"/>
 

@@ -2,9 +2,7 @@ package com.tiendasuplementos.app.data.remote.dto
 
 data class CreateProductRequest(
     val name: String,
+    val description: String, // Campo añadido
     val price: Double,
-    val stock: Int,
-    // La API de Xano puede inferir el user_id del token de autenticación.
-    // Si necesitas enviarlo manually, inclúyelo aquí.
-    // val user_id: Int
+    val stock: Int
 )

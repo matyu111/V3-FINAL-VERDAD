@@ -28,15 +28,31 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
             android:ellipsize="end"
             android:maxLines="2"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            android:textColor="@color/fitness_on_surface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/productImageView"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="100% Whey Gold Standard" />
+
+        <!-- TextView para la Descripción -->
+        <TextView
+            android:id="@+id/productDescriptionTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            android:textColor="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="@id/productNameTextView"
+            app:layout_constraintStart_toStartOf="@id/productNameTextView"
+            app:layout_constraintTop_toBottomOf="@id/productNameTextView"
+            tools:text="Esta es una descripción del producto para ver cómo queda en el diseño." />
 
         <TextView
             android:id="@+id/productPriceTextView"
@@ -44,10 +60,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-            android:textColor="@color/design_default_color_primary"
+            android:textColor="@color/fitness_primary"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/productNameTextView"
-            app:layout_constraintTop_toBottomOf="@id/productNameTextView"
+            app:layout_constraintTop_toBottomOf="@id/productDescriptionTextView"
             tools:text="$59.990" />
 
         <TextView
@@ -56,18 +72,19 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:textColor="@color/fitness_on_surface"
             app:layout_constraintStart_toStartOf="@id/productNameTextView"
             app:layout_constraintTop_toBottomOf="@id/productPriceTextView"
             tools:text="Stock: 15 unidades" />
 
-        <!-- TextView para mostrar el ID del producto -->
         <TextView
             android:id="@+id/productIdTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="12dp"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            android:textColor="@android:color/darker_gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/productNameTextView"
             app:layout_constraintTop_toBottomOf="@id/productStockTextView"
