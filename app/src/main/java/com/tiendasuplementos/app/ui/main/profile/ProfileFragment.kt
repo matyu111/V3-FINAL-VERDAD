@@ -5,89 +5,136 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.tiendasuplementos.app.R
+import com.tiendasuplementos.app.databinding.FragmentProfileBinding
 import com.tiendasuplementos.app.ui.auth.LoginActivity
-import com.tiendasuplementos.app.ui.main.product.DeletionState
-import com.tiendasuplementos.app.ui.main.product.ProductViewModel
+import com.tiendasuplementos.app.util.SessionManager
 
 class ProfileFragment : Fragment() {
 
-    private val profileViewModel: ProfileViewModel by viewModels()
-    private val productViewModel: ProductViewModel by activityViewModels()
+    private var _binding: FragmentProfileBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var profileManager: ProfileManager
+    private lateinit var sessionManager: SessionManager
+    private lateinit var orderHistoryAdapter: OrderHistoryAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+    ): View {
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val nameTextView: TextView = view.findViewById(R.id.textViewName)
-        val emailTextView: TextView = view.findViewById(R.id.textViewEmail)
-        val logoutButton: Button = view.findViewById(R.id.buttonLogout)
-        val deleteEditText: EditText = view.findViewById(R.id.editTextProductIdToDelete)
-        val deleteButton: Button = view.findViewById(R.id.buttonDeleteProduct)
+        profileManager = ProfileManager(requireContext())
+        sessionManager = SessionManager(requireContext())
 
-        profileViewModel.profileState.observe(viewLifecycleOwner) { state ->
+        setupUI()
+        observeViewModel()
+        
+        // Se llama solo a la función principal de carga de datos
+        fetchData(isInitialLoad = true)
+    }
+
+    private fun fetchData(isInitialLoad: Boolean) {
+        // Mostrar el indicador de refresco solo si el usuario lo activa
+        if (!isInitialLoad) {
+            binding.swipeRefreshLayout.isRefreshing = true
+        }
+        profileManager.fetchProfile(lifecycleScope)
+    }
+
+    private fun setupUI() {
+        orderHistoryAdapter = OrderHistoryAdapter()
+        binding.ordersRecyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = orderHistoryAdapter
+        }
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            fetchData(isInitialLoad = false) // El usuario refresca
+        }
+
+        binding.buttonLogout.setOnClickListener {
+            profileManager.logout(sessionManager)
+        }
+
+        binding.buttonEditProfile.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, EditProfileFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+    }
+
+    private fun observeViewModel() {
+        profileManager.profileState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is ProfileState.Loading -> {
-                    nameTextView.text = "Cargando..."
-                    emailTextView.text = "Cargando..."
+                    // No hacemos nada aquí para no sobreescribir los datos que ya están
                 }
                 is ProfileState.Success -> {
-                    nameTextView.text = state.user.name
-                    emailTextView.text = state.user.email
+                    binding.textViewName.text = state.user.name
+                    binding.textViewEmail.text = state.user.email
+                    
+                    // Si el perfil se carga con éxito, Y NO es admin, pedimos el historial
+                    if (sessionManager.fetchUserRole() != "admin") {
+                        profileManager.fetchOrderHistory(lifecycleScope)
+                    }
+                    binding.swipeRefreshLayout.isRefreshing = false // Ocultar animación
                 }
                 is ProfileState.Error -> {
-                    nameTextView.text = "Error"
-                    emailTextView.text = state.message
+                    binding.textViewName.text = "Error"
+                    binding.textViewEmail.text = state.message
+                    binding.swipeRefreshLayout.isRefreshing = false // Ocultar animación
                 }
                 is ProfileState.LoggedOut -> {
                     val intent = Intent(requireActivity(), LoginActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
                 }
-            }
-        }
-
-        productViewModel.deletionState.observe(viewLifecycleOwner) { state ->
-            when(state) {
-                is DeletionState.Success -> {
-                    Toast.makeText(requireContext(), "Producto borrado con éxito", Toast.LENGTH_SHORT).show()
-                    productViewModel.resetDeletionState()
-                    // No es necesario recargar desde la red, el ViewModel lo hace localmente
+                is ProfileState.Updated -> {
+                    profileManager.fetchProfile(lifecycleScope)
                 }
-                is DeletionState.Error -> {
-                    Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
-                    productViewModel.resetDeletionState()
+            }
+        }
+
+        profileManager.orderHistoryState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is OrderHistoryState.Loading -> {
+                    binding.myOrdersTitle.visibility = View.VISIBLE
                 }
-                else -> {}
+                is OrderHistoryState.Success -> {
+                    binding.myOrdersTitle.visibility = View.VISIBLE
+                    
+                    if (state.orders.isEmpty()) {
+                        binding.emptyOrdersTextView.visibility = View.VISIBLE
+                        binding.ordersRecyclerView.visibility = View.GONE
+                    } else {
+                        binding.emptyOrdersTextView.visibility = View.GONE
+                        binding.ordersRecyclerView.visibility = View.VISIBLE
+                        orderHistoryAdapter.submitList(state.orders)
+                    }
+                }
+                is OrderHistoryState.Error -> {
+                    binding.myOrdersTitle.visibility = View.GONE
+                    binding.emptyOrdersTextView.visibility = View.VISIBLE
+                    binding.emptyOrdersTextView.text = state.message // Mostrar mensaje de error
+                    binding.ordersRecyclerView.visibility = View.GONE
+                }
             }
         }
+    }
 
-        logoutButton.setOnClickListener {
-            profileViewModel.logout()
-        }
-
-        deleteButton.setOnClickListener {
-            val productId = deleteEditText.text.toString().toIntOrNull()
-            if (productId != null) {
-                productViewModel.deleteProduct(productId)
-            } else {
-                Toast.makeText(requireContext(), "Por favor, introduce un ID válido", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        profileViewModel.fetchProfile()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

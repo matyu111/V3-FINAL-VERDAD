@@ -7,6 +7,7 @@
     android:background="@color/fitness_dark_background">
 
     <TextView
+        android:id="@+id/titleTextView" 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Crear Nuevo Producto"
@@ -41,7 +42,6 @@
         android:inputType="textCapWords"
         android:layout_marginBottom="16dp"/>
 
-    <!-- EditText para la Descripción -->
     <EditText
         android:id="@+id/editTextProductDescription"
         android:layout_width="match_parent"

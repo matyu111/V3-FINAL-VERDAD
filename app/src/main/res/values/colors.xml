@@ -12,4 +12,8 @@
     <color name="fitness_on_primary">#000000</color> <!-- Texto sobre el color primario -->
     <color name="fitness_on_surface">#FFFFFF</color> <!-- Texto sobre las superficies oscuras -->
 
+    <!-- Colores de Estado (Añadidos) -->
+    <color name="fitness_error">#CF6679</color> <!-- Rojo para errores y acciones de bloqueo -->
+    <color name="fitness_success">#018786</color> <!-- Verde/Turquesa para acciones de éxito y desbloqueo -->
+
 </resources>

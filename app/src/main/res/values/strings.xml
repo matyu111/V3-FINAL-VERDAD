@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">tiendasuplementos</string>
+
+    <string name="loading">Cargando...</string>
+    <string name="error">Error</string>
+    <string name="product_deleted_successfully">Producto borrado con éxito</string>
+    <string name="wait_for_profile_data_to_load">Espera a que carguen los datos del perfil</string>
+    <string name="please_enter_a_valid_id">Por favor, introduce un ID válido</string>
+    <string name="profile_updated_successfully">Perfil actualizado con éxito</string>
+    <string name="name_cannot_be_empty">El nombre no puede estar vacío</string>
 </resources>

@@ -29,17 +29,16 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:ellipsize="end"
             android:maxLines="2"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
             android:textColor="@color/fitness_on_surface"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/buttonAddToCart"
             app:layout_constraintStart_toEndOf="@id/productImageView"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="100% Whey Gold Standard" />
 
-        <!-- TextView para la Descripción -->
         <TextView
             android:id="@+id/productDescriptionTextView"
             android:layout_width="0dp"
@@ -74,7 +73,7 @@
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
             android:textColor="@color/fitness_on_surface"
             app:layout_constraintStart_toStartOf="@id/productNameTextView"
-            app:layout_constraintTop_toBottomOf="@id/productPriceTextView"
+            app:layout_constraintTop_toBottomOf="@+id/productPriceTextView"
             tools:text="Stock: 15 unidades" />
 
         <TextView
@@ -87,8 +86,34 @@
             android:textColor="@android:color/darker_gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/productNameTextView"
-            app:layout_constraintTop_toBottomOf="@id/productStockTextView"
+            app:layout_constraintTop_toBottomOf="@+id/productStockTextView"
             tools:text="ID: 12345" />
+
+        <!-- Botón para Añadir al Carrito (Cliente) -->
+        <ImageButton
+            android:id="@+id/buttonAddToCart"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@android:drawable/ic_menu_add"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@color/fitness_secondary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"/>
+
+        <!-- Botón para Editar (Admin) -->
+        <ImageButton
+            android:id="@+id/buttonEditProduct"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@android:drawable/ic_menu_edit"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@color/fitness_secondary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

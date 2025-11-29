@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_admin_products"
+        android:icon="@drawable/ic_launcher_foreground" 
+        android:title="Productos" />
+
+    <item
+        android:id="@+id/nav_admin_users"
+        android:icon="@drawable/ic_launcher_foreground" 
+        android:title="Usuarios" />
+
+    <item
+        android:id="@+id/nav_admin_orders"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="Órdenes" />
+        
+    <item
+        android:id="@+id/nav_admin_profile"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="Perfil" />
+
+</menu>
