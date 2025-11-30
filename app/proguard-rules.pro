@@ -19,3 +19,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Gson rules
+-keep class com.tiendasuplementos.app.data.remote.dto.** { *; }
+-keepclassmembers class com.tiendasuplementos.app.data.remote.dto.** { *; }

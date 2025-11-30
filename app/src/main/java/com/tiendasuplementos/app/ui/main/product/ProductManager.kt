@@ -4,16 +4,20 @@ import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.tiendasuplementos.app.data.remote.dto.CartItemRequest
+import com.tiendasuplementos.app.data.remote.dto.OrderRequest
 import com.tiendasuplementos.app.data.remote.dto.Product
 import com.tiendasuplementos.app.data.repository.ProductRepository
 import com.tiendasuplementos.app.ui.state.ProductListState
 import com.tiendasuplementos.app.ui.state.UiState
+import com.tiendasuplementos.app.util.SessionManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class ProductManager private constructor(context: Context) {
 
     private val productRepository = ProductRepository(context)
+    private val sessionManager = SessionManager(context)
 
     // --- State for Products List ---
     private val _productListState = MutableLiveData<ProductListState>()
@@ -193,18 +197,42 @@ class ProductManager private constructor(context: Context) {
         _orderState.value = UiState.Loading
         scope.launch {
             try {
-                // Por simplicidad, asumimos que el backend maneja la creación de la orden basada en items
-                // enviados o que simplemente simula el checkout.
-                // Si necesitaras enviar los items del carrito, tendrías que mapearlos a un DTO.
-                // val orderRequest = CreateOrderRequest(items = _cartItems.value!!.map { ... }, address = shippingAddress)
-                
-                // Ejemplo ficticio llamando a un repositorio (que deberías tener implementado si existe el endpoint real)
-                // val response = orderRepository.createOrder(orderRequest)
-                
-                // Simulamos éxito por ahora o llamamos a una función existente si la tienes en ProductRepository
-                // Si no tienes el endpoint implementado, simulamos un delay y éxito:
-                 kotlinx.coroutines.delay(1000) 
-                 _orderState.postValue(UiState.Success(Unit))
+                val userId = sessionManager.fetchUserId() ?: -1
+                if (userId == -1) {
+                    _orderState.postValue(UiState.Error("Usuario no identificado."))
+                    return@launch
+                }
+
+                val cartItems = _cartItems.value?.map {
+                    CartItemRequest(
+                        productId = it.product.id,
+                        quantity = it.quantity,
+                        productName = it.product.name,
+                        price = it.product.price // Añadido precio unitario
+                    )
+                } ?: emptyList()
+
+                if (cartItems.isEmpty()) {
+                    _orderState.postValue(UiState.Error("El carrito está vacío."))
+                    return@launch
+                }
+
+                val totalAmount = _cartItems.value?.sumOf { it.product.price * it.quantity } ?: 0.0
+
+                val orderRequest = OrderRequest(
+                    userId = userId,
+                    cartItems = cartItems,
+                    totalAmount = totalAmount.toInt(), // Convertir a Int
+                    shippingAddress = shippingAddress
+                )
+
+                val response = productRepository.createOrder(orderRequest)
+
+                if (response.isSuccessful) {
+                    _orderState.postValue(UiState.Success(Unit))
+                } else {
+                    _orderState.postValue(UiState.Error("Error al crear la orden."))
+                }
 
             } catch (e: Exception) {
                 _orderState.postValue(UiState.Error("Error al crear la orden: ${e.message}"))

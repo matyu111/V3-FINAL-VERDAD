@@ -42,7 +42,7 @@ class AdminOrderAdapter(
             binding.textViewOrderStatus.text = order.status
 
             // Mostrar botones solo si la orden está pendiente
-            if (order.status.equals("pendiente", ignoreCase = true)) {
+            if (order.status.equals("pendiente", ignoreCase = true) || order.status.equals("pending", ignoreCase = true)) {
                 binding.layoutOrderActions.visibility = View.VISIBLE
             } else {
                 binding.layoutOrderActions.visibility = View.GONE

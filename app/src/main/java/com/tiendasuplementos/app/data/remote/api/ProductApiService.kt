@@ -1,9 +1,11 @@
 package com.tiendasuplementos.app.data.remote.api
 
+import com.tiendasuplementos.app.data.remote.dto.OrderRequest
 import com.tiendasuplementos.app.data.remote.dto.Product
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
@@ -40,4 +42,7 @@ interface ProductApiService {
         @Part("stock") stock: RequestBody,
         @Part images: List<MultipartBody.Part>
     ): Response<Product>
+
+    @POST("orders")
+    suspend fun createOrder(@Body orderRequest: OrderRequest): Response<Unit>
 }

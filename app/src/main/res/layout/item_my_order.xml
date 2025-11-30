@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -9,18 +10,25 @@
         android:id="@+id/textViewOrderId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        tools:text="Pedido #12345" />
 
     <TextView
         android:id="@+id/textViewOrderStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp" />
+        android:layout_marginTop="4dp"
+        android:textColor="@android:color/white"
+        tools:text="Estado: Pendiente" />
 
     <TextView
         android:id="@+id/textViewOrderTotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp" />
+        android:layout_marginTop="4dp"
+        android:textColor="@android:color/white"
+        tools:text="Total: $500.00" />
 
 </LinearLayout>

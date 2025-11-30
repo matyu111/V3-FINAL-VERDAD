@@ -34,6 +34,7 @@ class MyOrdersFragment : Fragment() {
 
         setupRecyclerView()
         setupObservers()
+        setupSwipeRefresh()
 
         orderManager.getMyOrders(lifecycleScope)
     }
@@ -43,16 +44,26 @@ class MyOrdersFragment : Fragment() {
         binding.recyclerViewMyOrders.adapter = myOrdersAdapter
     }
 
+    private fun setupSwipeRefresh() {
+        binding.swipeRefreshLayoutMyOrders.setOnRefreshListener {
+            orderManager.getMyOrders(lifecycleScope)
+        }
+    }
+
     private fun setupObservers() {
         orderManager.orderListState.observe(viewLifecycleOwner) { state ->
-            binding.progressBarMyOrders.isVisible = state is OrderListState.Loading
+            binding.swipeRefreshLayoutMyOrders.isRefreshing = false
+
+            binding.progressBarMyOrders.isVisible = state is OrderListState.Loading && !binding.swipeRefreshLayoutMyOrders.isRefreshing
             binding.textViewErrorMyOrders.isVisible = state is OrderListState.Error
 
             if (state is OrderListState.Success) {
                 binding.recyclerViewMyOrders.isVisible = true
                 myOrdersAdapter.updateOrders(state.orders)
             } else {
-                binding.recyclerViewMyOrders.isVisible = false
+                if (state !is OrderListState.Loading) {
+                    binding.recyclerViewMyOrders.isVisible = false
+                }
             }
         }
     }

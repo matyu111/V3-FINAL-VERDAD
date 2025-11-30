@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.webkit.MimeTypeMap
 import com.tiendasuplementos.app.data.remote.RetrofitClient
+import com.tiendasuplementos.app.data.remote.dto.OrderRequest
 import com.tiendasuplementos.app.data.remote.dto.Product
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -69,5 +70,9 @@ class ProductRepository(private val context: Context) {
         }
 
         return productApiService.updateProduct(productId, namePart, descriptionPart, pricePart, stockPart, imageParts)
+    }
+
+    suspend fun createOrder(orderRequest: OrderRequest): Response<Unit> {
+        return productApiService.createOrder(orderRequest)
     }
 }

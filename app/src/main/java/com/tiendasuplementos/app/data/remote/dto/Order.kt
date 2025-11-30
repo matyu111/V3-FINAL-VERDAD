@@ -10,5 +10,6 @@ data class Order(
     @SerializedName("user_id") val userId: Int,
     @SerializedName("cart_items") val cartItems: JsonElement, 
     @SerializedName("total_amount") val totalAmount: Double,
-    val status: String
+    val status: String,
+    @SerializedName("shipping_address") val shippingAddress: String? = null // Campo añadido, puede ser nulo
 )

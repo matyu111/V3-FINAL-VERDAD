@@ -36,6 +36,7 @@ class AdminOrderListFragment : Fragment() {
 
         setupRecyclerView()
         setupObservers()
+        setupSwipeRefresh()
 
         orderManager.fetchOrders(lifecycleScope)
     }
@@ -53,16 +54,28 @@ class AdminOrderListFragment : Fragment() {
         binding.recyclerViewOrdersAdmin.adapter = adminOrderAdapter
     }
 
+    private fun setupSwipeRefresh() {
+        binding.swipeRefreshLayoutOrdersAdmin.setOnRefreshListener {
+            orderManager.fetchOrders(lifecycleScope)
+        }
+    }
+
     private fun setupObservers() {
         orderManager.orderListState.observe(viewLifecycleOwner) { state ->
-            binding.progressBarOrdersAdmin.isVisible = state is OrderListState.Loading
+            // Detener la animación de recarga si estaba activa
+            binding.swipeRefreshLayoutOrdersAdmin.isRefreshing = false
+
+            binding.progressBarOrdersAdmin.isVisible = state is OrderListState.Loading && !binding.swipeRefreshLayoutOrdersAdmin.isRefreshing
             binding.textViewErrorOrdersAdmin.isVisible = state is OrderListState.Error
 
             if (state is OrderListState.Success) {
                 binding.recyclerViewOrdersAdmin.isVisible = true
                 adminOrderAdapter.updateOrders(state.orders)
             } else {
-                binding.recyclerViewOrdersAdmin.isVisible = false
+                // No ocultar el RecyclerView en loading para que no parpadee al refrescar
+                if (state !is OrderListState.Loading) {
+                    binding.recyclerViewOrdersAdmin.isVisible = false
+                }
             }
         }
 
