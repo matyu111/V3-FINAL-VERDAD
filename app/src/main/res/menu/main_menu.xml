@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_products"
-        android:icon="@android:drawable/ic_menu_gallery"
-        android:title="Productos" />
+        android:id="@+id/cartFragment"
+        android:icon="@drawable/ic_cart"
+        android:title="Carrito"
+        app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_add_product"
-        android:icon="@android:drawable/ic_menu_add"
-        android:title="Crear" />
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/ic_profile"
+        android:title="Mi Perfil"
+        app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_user_info"
-        android:icon="@android:drawable/ic_menu_manage"
-        android:title="Perfil" />
+        android:id="@+id/action_logout"
+        android:title="Cerrar Sesión"
+        app:showAsAction="never" />
 
 </menu>

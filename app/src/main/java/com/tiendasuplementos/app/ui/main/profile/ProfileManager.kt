@@ -1,6 +1,5 @@
 package com.tiendasuplementos.app.ui.main.profile
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.tiendasuplementos.app.data.remote.dto.Order
@@ -17,10 +16,10 @@ sealed class OrderHistoryState {
     data class Error(val message: String) : OrderHistoryState()
 }
 
-class ProfileManager(context: Context) {
+class ProfileManager() {
 
-    private val authRepository = AuthRepository(context)
-    private val orderRepository = OrderRepository(context) // Repositorio de órdenes añadido
+    private val authRepository = AuthRepository()
+    private val orderRepository = OrderRepository() // Repositorio de órdenes añadido
 
     private val _profileState = MutableLiveData<ProfileState>()
     val profileState: LiveData<ProfileState> = _profileState
@@ -50,7 +49,7 @@ class ProfileManager(context: Context) {
             try {
                 val response = orderRepository.getMyOrders()
                 if (response.isSuccessful && response.body() != null) {
-                    _orderHistoryState.postValue(OrderHistoryState.Success(response.body()!!))
+                    _orderHistoryState.postValue(OrderHistoryState.Success(response.body()!!.orders))
                 } else {
                     _orderHistoryState.postValue(OrderHistoryState.Error("Error al obtener el historial de pedidos."))
                 }

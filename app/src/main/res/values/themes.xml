@@ -12,8 +12,11 @@
         <!-- Color de Fondo y Superficies -->
         <item name="android:colorBackground">@color/fitness_dark_background</item>
         <item name="colorSurface">@color/fitness_surface</item>
-        <item name="colorOnBackground">@color/fitness_on_surface</item>
-        <item name="colorOnSurface">@color/fitness_on_surface</item>
+        <item name="colorOnBackground">@android:color/white</item>
+        <item name="colorOnSurface">@android:color/white</item>
+        <!-- Color del texto principal y secundario en la actividad -->
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColor">@android:color/white</item>
         <!-- Color de la Barra de Estado -->
         <item name="android:statusBarColor">@color/fitness_dark_background</item>
     </style>

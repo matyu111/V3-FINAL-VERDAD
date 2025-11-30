@@ -2,7 +2,8 @@ package com.tiendasuplementos.app.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
 
-// Esta clase representa la estructura de la respuesta del endpoint /my_orders
+// Esta clase envuelve la respuesta de la API que contiene una lista de órdenes.
 data class OrderListResponse(
-    @SerializedName("items") val items: List<Order>
+    @SerializedName("orders") // Asegúrate de que el nombre coincida con el de la API
+    val orders: List<Order>
 )

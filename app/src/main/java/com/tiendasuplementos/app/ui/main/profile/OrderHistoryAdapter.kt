@@ -27,7 +27,7 @@ class OrderHistoryAdapter : ListAdapter<Order, OrderHistoryAdapter.OrderViewHold
 
     class OrderViewHolder(private val binding: ItemOrderHistoryBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        private val currencyFormat = NumberFormat.getCurrencyInstance(Locale("es", "CL"))
+        private val currencyFormat = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("es-CL"))
         private val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
 
         fun bind(order: Order) {

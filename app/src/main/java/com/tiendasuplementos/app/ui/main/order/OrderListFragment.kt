@@ -29,7 +29,7 @@ class OrderListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        orderManager = OrderManager(requireContext())
+        orderManager = OrderManager()
 
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 

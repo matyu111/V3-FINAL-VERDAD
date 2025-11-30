@@ -3,30 +3,32 @@ package com.tiendasuplementos.app.ui.main.user
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.tiendasuplementos.app.data.remote.RetrofitClient
+import com.tiendasuplementos.app.data.remote.dto.UpdateUserStatusRequest
 import com.tiendasuplementos.app.data.remote.dto.User
-import com.tiendasuplementos.app.data.repository.UserRepository
+import com.tiendasuplementos.app.ui.state.UiState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class UserManager(context: Context) {
+class UserManager private constructor(context: Context) {
 
-    private val userRepository = UserRepository(context)
+    private val authApiService = RetrofitClient.authApiService
 
     private val _userListState = MutableLiveData<UserListState>()
     val userListState: LiveData<UserListState> = _userListState
 
-    private val _userStatusState = MutableLiveData<UserStatusState>(UserStatusState.Idle)
-    val userStatusState: LiveData<UserStatusState> = _userStatusState
+    private val _userUpdateState = MutableLiveData<UiState<Unit>>()
+    val userUpdateState: LiveData<UiState<Unit>> = _userUpdateState
 
-    fun fetchUsers(scope: CoroutineScope, query: String? = null) {
+    fun fetchUsers(scope: CoroutineScope) {
         _userListState.value = UserListState.Loading
         scope.launch {
             try {
-                val response = userRepository.getUsers(query)
+                val response = authApiService.getUsers()
                 if (response.isSuccessful && response.body() != null) {
                     _userListState.postValue(UserListState.Success(response.body()!!))
                 } else {
-                    _userListState.postValue(UserListState.Error("Error al cargar usuarios."))
+                    _userListState.postValue(UserListState.Error("Error al cargar los usuarios."))
                 }
             } catch (e: Exception) {
                 _userListState.postValue(UserListState.Error("Error de red: ${e.message}"))
@@ -34,23 +36,38 @@ class UserManager(context: Context) {
         }
     }
 
-    fun toggleUserStatus(scope: CoroutineScope, user: User) {
-        _userStatusState.value = UserStatusState.Loading
+    fun updateUserStatus(scope: CoroutineScope, userId: Int, newStatus: String) {
+        _userUpdateState.value = UiState.Loading
         scope.launch {
             try {
-                val newStatus = if (user.status.equals("active", ignoreCase = true)) "blocked" else "active"
-                
-                // Corregido: Se pasa el objeto User completo, no solo el ID.
-                val response = userRepository.toggleUserStatus(user, newStatus)
+                val isBlocked = newStatus.equals("blocked", ignoreCase = true)
+                val response = authApiService.updateUserStatus(userId, UpdateUserStatusRequest(isBlocked))
                 
                 if (response.isSuccessful) {
-                    _userStatusState.postValue(UserStatusState.Success(user.id))
-                    fetchUsers(scope) // Recarga la lista para mostrar el cambio
+                    _userUpdateState.postValue(UiState.Success(Unit))
+                    fetchUsers(this)
                 } else {
-                    _userStatusState.postValue(UserStatusState.Error("Error al cambiar el estado del usuario."))
+                    _userUpdateState.postValue(UiState.Error("Error al actualizar el usuario."))
                 }
             } catch (e: Exception) {
-                _userStatusState.postValue(UserStatusState.Error("Error de red: ${e.message}"))
+                _userUpdateState.postValue(UiState.Error("Error de red: ${e.message}"))
+            }
+        }
+    }
+
+    fun resetUserUpdateState() {
+        _userUpdateState.value = UiState.Idle
+    }
+
+    companion object {
+        @Volatile
+        private var INSTANCE: UserManager? = null
+
+        fun getInstance(context: Context): UserManager {
+            return INSTANCE ?: synchronized(this) {
+                val instance = UserManager(context.applicationContext)
+                INSTANCE = instance
+                instance
             }
         }
     }

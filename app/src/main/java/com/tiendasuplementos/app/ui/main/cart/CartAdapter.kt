@@ -2,8 +2,6 @@ package com.tiendasuplementos.app.ui.main.cart
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.tiendasuplementos.app.R
@@ -11,48 +9,58 @@ import com.tiendasuplementos.app.databinding.ItemCartBinding
 import com.tiendasuplementos.app.ui.main.product.CartItem
 
 class CartAdapter(
+    private var cartItems: List<CartItem>,
     private val onIncrease: (CartItem) -> Unit,
     private val onDecrease: (CartItem) -> Unit,
     private val onRemove: (CartItem) -> Unit
-) : ListAdapter<CartItem, CartAdapter.CartViewHolder>(CartDiffCallback()) {
+) : RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartViewHolder {
         val binding = ItemCartBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CartViewHolder(binding, onIncrease, onDecrease, onRemove)
+        return CartViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: CartViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(cartItems[position])
     }
 
-    class CartViewHolder(
-        private val binding: ItemCartBinding,
-        private val onIncrease: (CartItem) -> Unit,
-        private val onDecrease: (CartItem) -> Unit,
-        private val onRemove: (CartItem) -> Unit
-    ) : RecyclerView.ViewHolder(binding.root) {
+    override fun getItemCount(): Int = cartItems.size
+
+    fun updateCartItems(newCartItems: List<CartItem>) {
+        cartItems = newCartItems
+        notifyDataSetChanged() // For simplicity. DiffUtil would be better for performance.
+    }
+
+    inner class CartViewHolder(private val binding: ItemCartBinding) : RecyclerView.ViewHolder(binding.root) {
+        private val BASE_IMAGE_URL = "https://x8ki-letl-twmt.n7.xano.io"
 
         fun bind(cartItem: CartItem) {
-            binding.productNameTextView.text = cartItem.product.name
-            binding.quantityTextView.text = cartItem.quantity.toString()
+            val product = cartItem.product
+            binding.textViewProductNameCart.text = product.name
+            binding.textViewProductPriceCart.text = "$${product.price}"
+            binding.textViewQuantity.text = cartItem.quantity.toString()
 
-            cartItem.product.image?.url?.let { 
-                binding.productImageView.load(it)
-            } ?: binding.productImageView.setImageResource(R.drawable.ic_launcher_background)
+            val imageUrl = product.image?.url
+            if (imageUrl != null) {
+                val fullImageUrl = if (imageUrl.startsWith("http")) imageUrl else BASE_IMAGE_URL + imageUrl
+                binding.imageViewProductCart.load(fullImageUrl) {
+                    placeholder(R.drawable.ic_placeholder)
+                    error(R.drawable.ic_error)
+                }
+            } else {
+                binding.imageViewProductCart.load(R.drawable.ic_placeholder)
+            }
 
-            binding.buttonIncreaseQuantity.setOnClickListener { onIncrease(cartItem) }
-            binding.buttonDecreaseQuantity.setOnClickListener { onDecrease(cartItem) }
-            binding.buttonRemoveItem.setOnClickListener { onRemove(cartItem) }
-        }
-    }
-
-    class CartDiffCallback : DiffUtil.ItemCallback<CartItem>() {
-        override fun areItemsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
-            return oldItem.product.id == newItem.product.id
-        }
-
-        override fun areContentsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
-            return oldItem == newItem
+            // Listeners
+            binding.buttonIncreaseQuantity.setOnClickListener {
+                onIncrease(cartItem)
+            }
+            binding.buttonDecreaseQuantity.setOnClickListener {
+                onDecrease(cartItem)
+            }
+            binding.buttonRemoveItem.setOnClickListener {
+                onRemove(cartItem)
+            }
         }
     }
 }

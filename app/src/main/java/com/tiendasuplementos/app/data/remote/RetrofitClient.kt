@@ -13,16 +13,31 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
 
-    // URL Base para el grupo de API de Autenticación y Usuarios
     private const val AUTH_URL = "https://x8ki-letl-twmt.n7.xano.io/api:dDE3VCk5/"
-
-    // URL Base para el grupo de API de la Tienda (Productos, Órdenes)
     private const val STORE_URL = "https://x8ki-letl-twmt.n7.xano.io/api:aI3nlWmP/"
 
-    private var authApiClient: Retrofit? = null
-    private var storeApiClient: Retrofit? = null
+    lateinit var okHttpClient: OkHttpClient
+        private set
 
-    private fun getClient(context: Context): OkHttpClient {
+    private val authApiClient: Retrofit by lazy {
+        Retrofit.Builder()
+            .baseUrl(AUTH_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    private val storeApiClient: Retrofit by lazy {
+        Retrofit.Builder()
+            .baseUrl(STORE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    fun initialize(context: Context) {
+        if (::okHttpClient.isInitialized) return
+
         val sessionManager = SessionManager(context)
         val authInterceptor = okhttp3.Interceptor { chain ->
             val requestBuilder = chain.request().newBuilder()
@@ -36,50 +51,25 @@ object RetrofitClient {
             level = HttpLoggingInterceptor.Level.BODY
         }
 
-        return OkHttpClient.Builder()
+        okHttpClient = OkHttpClient.Builder()
             .addInterceptor(authInterceptor)
             .addInterceptor(loggingInterceptor)
             .build()
     }
 
-    private fun getAuthApiClient(context: Context): Retrofit {
-        if (authApiClient == null) {
-            authApiClient = Retrofit.Builder()
-                .baseUrl(AUTH_URL)
-                .client(getClient(context))
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        }
-        return authApiClient!!
+    val authApiService: AuthApiService by lazy {
+        authApiClient.create(AuthApiService::class.java)
     }
 
-    private fun getStoreApiClient(context: Context): Retrofit {
-        if (storeApiClient == null) {
-            storeApiClient = Retrofit.Builder()
-                .baseUrl(STORE_URL)
-                .client(getClient(context))
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        }
-        return storeApiClient!!
+    val userApiService: UserApiService by lazy {
+        storeApiClient.create(UserApiService::class.java)
     }
 
-    // --- Proveedores de Servicios de API ---
-
-    fun getAuthApiService(context: Context): AuthApiService {
-        return getAuthApiClient(context).create(AuthApiService::class.java)
+    val productApiService: ProductApiService by lazy {
+        storeApiClient.create(ProductApiService::class.java)
     }
 
-    fun getUserApiService(context: Context): UserApiService {
-        // CORREGIDO: El endpoint de usuarios está en el Store API, no en el Auth API
-        return getStoreApiClient(context).create(UserApiService::class.java)
-    }
-
-    fun getProductApiService(context: Context): ProductApiService {
-        return getStoreApiClient(context).create(ProductApiService::class.java)
-    }
-
-    fun getOrderApiService(context: Context): OrderApiService {
-        return getStoreApiClient(context).create(OrderApiService::class.java)
+    val orderApiService: OrderApiService by lazy {
+        storeApiClient.create(OrderApiService::class.java)
     }
 }

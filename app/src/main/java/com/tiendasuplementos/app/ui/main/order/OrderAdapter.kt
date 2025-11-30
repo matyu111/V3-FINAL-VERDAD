@@ -38,7 +38,7 @@ class OrderAdapter(
             binding.orderIdTextView.text = "Orden #${order.id}"
             binding.orderStatusTextView.text = "Estado: ${order.status.replaceFirstChar { it.uppercase() }}"
 
-            val format = NumberFormat.getCurrencyInstance(Locale("es", "CL"))
+            val format = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("es-CL"))
             binding.orderTotalTextView.text = "Total: ${format.format(order.totalAmount)}"
 
             try {

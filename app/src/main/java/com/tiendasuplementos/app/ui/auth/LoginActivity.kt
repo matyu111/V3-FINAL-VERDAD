@@ -6,45 +6,37 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.tiendasuplementos.app.MyApplication
 import com.tiendasuplementos.app.databinding.ActivityLoginBinding
-import com.tiendasuplementos.app.ui.main.MainActivity
-import com.tiendasuplementos.app.util.SessionManager
+import com.tiendasuplementos.app.MainActivity // Corrected import
+import com.tiendasuplementos.app.ui.state.UiState
 
 class LoginActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var authManager: AuthManager
-    private lateinit var sessionManager: SessionManager
+    private val authManager: AuthManager by lazy { AuthManager(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Corregido: Se pasa el contexto al AuthManager
-        authManager = AuthManager(this)
-        sessionManager = SessionManager(this)
+        // Usar la instancia única del SessionManager
+        val sessionManager = MyApplication.sessionManager
 
-        // Si ya hay sesión, vamos directo al MainActivity
         if (sessionManager.fetchAuthToken() != null) {
             navigateToMain()
+            return // Salir para evitar configurar observadores innecesariamente
         }
 
-        authManager.loginResult.observe(this) { state ->
-            binding.progressBar.visibility = if (state is AuthState.Loading) View.VISIBLE else View.GONE
+        authManager.loginState.observe(this) { state ->
+            binding.progressBar.visibility = if (state is UiState.Loading) View.VISIBLE else View.GONE
 
             when (state) {
-                is AuthState.Success -> {
-                    // Comprobamos si el usuario está bloqueado
-                    if (state.response.status == "blocked") {
-                        Toast.makeText(this, "Tu cuenta ha sido bloqueada.", Toast.LENGTH_LONG).show()
-                    } else {
-                        sessionManager.saveAuthToken(state.response.token)
-                        sessionManager.saveUserRole(state.response.role)
-                        navigateToMain()
-                    }
+                is UiState.Success -> {
+                    // El AuthManager ya se encarga de guardar la sesión
+                    navigateToMain()
                 }
-                is AuthState.Error -> {
+                is UiState.Error -> {
                     Toast.makeText(this, state.message, Toast.LENGTH_SHORT).show()
                 }
                 else -> {}
@@ -67,5 +59,6 @@ class LoginActivity : AppCompatActivity() {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         startActivity(intent)
+        finish() // Finalizar LoginActivity para que el usuario no pueda volver atrás
     }
 }

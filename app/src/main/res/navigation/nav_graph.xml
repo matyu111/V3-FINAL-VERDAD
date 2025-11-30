@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.tiendasuplementos.app.ui.auth.LoginFragment"
+        android:label="Iniciar Sesión"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_productListFragment"
+            app:destination="@id/productListFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_loginFragment_to_adminDashboardFragment"
+            app:destination="@id/adminDashboardFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/productListFragment"
+        android:name="com.tiendasuplementos.app.ui.main.product.ProductListFragment"
+        android:label="Catálogo"
+        tools:layout="@layout/fragment_product_list" />
+
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.tiendasuplementos.app.ui.main.cart.CartFragment"
+        android:label="Carrito"
+        tools:layout="@layout/fragment_cart" >
+        <action
+            android:id="@+id/action_cartFragment_to_checkoutFragment"
+            app:destination="@id/checkoutFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="com.tiendasuplementos.app.ui.main.checkout.CheckoutFragment"
+        android:label="Finalizar Compra"
+        tools:layout="@layout/fragment_checkout" >
+        <action
+            android:id="@+id/action_checkoutFragment_to_adminDashboardFragment"
+            app:destination="@id/adminDashboardFragment"
+            app:popUpTo="@id/checkoutFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/adminDashboardFragment"
+        android:name="com.tiendasuplementos.app.ui.admin.AdminDashboardFragment"
+        android:label="Panel de Administrador"
+        tools:layout="@layout/fragment_admin_dashboard" >
+        <action
+            android:id="@+id/action_adminDashboardFragment_to_adminProductListFragment"
+            app:destination="@id/adminProductListFragment" />
+        <action
+            android:id="@+id/action_adminDashboardFragment_to_adminUserListFragment"
+            app:destination="@id/adminUserListFragment" />
+        <action
+            android:id="@+id/action_adminDashboardFragment_to_adminOrderListFragment"
+            app:destination="@id/adminOrderListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/adminProductListFragment"
+        android:name="com.tiendasuplementos.app.ui.admin.product.AdminProductListFragment"
+        android:label="Gestionar Productos"
+        tools:layout="@layout/fragment_admin_product_list" >
+        <action
+            android:id="@+id/action_adminProductListFragment_to_editProductFragment"
+            app:destination="@id/editProductFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editProductFragment"
+        android:name="com.tiendasuplementos.app.ui.main.product.EditProductFragment"
+        android:label="Editar Producto"
+        tools:layout="@layout/fragment_edit_product">
+        <argument
+            android:name="product"
+            app:argType="com.tiendasuplementos.app.data.remote.dto.Product"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/adminUserListFragment"
+        android:name="com.tiendasuplementos.app.ui.admin.user.AdminUserListFragment"
+        android:label="Gestionar Usuarios"
+        tools:layout="@layout/fragment_admin_user_list" />
+
+    <fragment
+        android:id="@+id/adminOrderListFragment"
+        android:name="com.tiendasuplementos.app.ui.admin.order.AdminOrderListFragment"
+        android:label="Revisar Órdenes"
+        tools:layout="@layout/fragment_admin_order_list" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.tiendasuplementos.app.ui.main.profile.ProfileFragment"
+        android:label="Mi Perfil"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_myOrdersFragment"
+            app:destination="@id/myOrdersFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/myOrdersFragment"
+        android:name="com.tiendasuplementos.app.ui.main.profile.MyOrdersFragment"
+        android:label="Mis Pedidos"
+        tools:layout="@layout/fragment_my_orders" />
+
+</navigation>

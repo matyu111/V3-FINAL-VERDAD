@@ -29,7 +29,7 @@ class EditProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Corregido: Se pasa el contexto al ProfileManager
-        profileManager = ProfileManager(requireContext())
+        profileManager = ProfileManager()
 
         profileManager.profileState.observe(viewLifecycleOwner) { state ->
             when(state) {

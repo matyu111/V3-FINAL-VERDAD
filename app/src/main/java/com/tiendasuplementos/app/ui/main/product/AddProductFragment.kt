@@ -1,17 +1,17 @@
 package com.tiendasuplementos.app.ui.main.product
 
-import android.app.Activity
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.tiendasuplementos.app.databinding.FragmentAddProductBinding
+import com.tiendasuplementos.app.ui.state.UiState
 
 class AddProductFragment : Fragment() {
 
@@ -19,14 +19,13 @@ class AddProductFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var productManager: ProductManager
-    private var selectedImageUri: Uri? = null
+    private val selectedImageUris = mutableListOf<Uri>()
 
-    private val selectImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            result.data?.data?.let {
-                selectedImageUri = it
-                binding.imageViewProductPreview.setImageURI(it)
-            }
+    private val selectImagesLauncher = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris: List<Uri> ->
+        if (uris.isNotEmpty()) {
+            selectedImageUris.clear()
+            selectedImageUris.addAll(uris)
+            showImagePreviews()
         }
     }
 
@@ -40,50 +39,59 @@ class AddProductFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         productManager = ProductManager.getInstance(requireContext())
 
-        binding.buttonSelectImage.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            selectImageLauncher.launch(intent)
+        binding.buttonSelectImages.setOnClickListener {
+            selectImagesLauncher.launch("image/*")
         }
 
-        binding.buttonCreateProduct.setOnClickListener {
-            val name = binding.editTextProductName.text.toString()
-            val description = binding.editTextProductDescription.text.toString()
-            val price = binding.editTextProductPrice.text.toString().toDoubleOrNull()
-            val stock = binding.editTextProductStock.text.toString().toIntOrNull()
-
-            if (name.isNotBlank() && description.isNotBlank() && price != null && stock != null && selectedImageUri != null) {
-                productManager.createProduct(lifecycleScope, name, description, price, stock, selectedImageUri!!)
-            } else {
-                Toast.makeText(requireContext(), "Por favor, completa todos los campos y selecciona una imagen", Toast.LENGTH_SHORT).show()
-            }
+        binding.buttonSaveProduct.setOnClickListener {
+            saveProduct()
         }
 
-        observeCreationState()
-    }
-
-    private fun observeCreationState() {
         productManager.creationState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Success -> {
                     Toast.makeText(requireContext(), "Producto creado con éxito", Toast.LENGTH_SHORT).show()
-                    productManager.resetCreationState()
                     parentFragmentManager.popBackStack()
                 }
                 is UiState.Error -> {
-                    Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
-                    productManager.resetCreationState()
+                    Toast.makeText(requireContext(), "Error: ${state.message}", Toast.LENGTH_SHORT).show()
                 }
-                else -> {}
+                else -> { /* No-op */ }
             }
         }
+    }
+
+    private fun showImagePreviews() {
+        binding.imagePreviewContainer.removeAllViews()
+        for (uri in selectedImageUris) {
+            val imageView = ImageView(requireContext()).apply {
+                layoutParams = ViewGroup.LayoutParams(200, 200)
+                scaleType = ImageView.ScaleType.CENTER_CROP
+                setImageURI(uri)
+            }
+            binding.imagePreviewContainer.addView(imageView)
+        }
+    }
+
+    private fun saveProduct() {
+        val name = binding.textFieldName.editText?.text.toString().trim()
+        val description = binding.textFieldDescription.editText?.text.toString().trim()
+        val price = binding.textFieldPrice.editText?.text.toString().toDoubleOrNull()
+        val stock = binding.textFieldStock.editText?.text.toString().toIntOrNull()
+
+        if (name.isEmpty() || description.isEmpty() || price == null || stock == null || selectedImageUris.isEmpty()) {
+            Toast.makeText(requireContext(), "Por favor, completa todos los campos y selecciona al menos una imagen", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        productManager.createProduct(lifecycleScope, name, description, price, stock, selectedImageUris)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        productManager.resetCreationState()
     }
 }

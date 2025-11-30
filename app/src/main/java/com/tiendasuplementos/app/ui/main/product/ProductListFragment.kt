@@ -1,20 +1,17 @@
 package com.tiendasuplementos.app.ui.main.product
 
 import android.os.Bundle
-import android.view.*
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.tiendasuplementos.app.R
 import com.tiendasuplementos.app.databinding.FragmentProductListBinding
-// Corregido: Importar desde el paquete correcto
-import com.tiendasuplementos.app.ui.main.product.CreateProductFragment 
-import com.tiendasuplementos.app.ui.main.product.EditProductFragment
-import com.tiendasuplementos.app.util.SessionManager
+import com.tiendasuplementos.app.ui.state.ProductListState
 
 class ProductListFragment : Fragment() {
 
@@ -22,14 +19,11 @@ class ProductListFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var productManager: ProductManager
-    private lateinit var productAdapter: ProductAdapter
-    private lateinit var sessionManager: SessionManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setHasOptionsMenu(true)
         _binding = FragmentProductListBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -37,70 +31,53 @@ class ProductListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sessionManager = SessionManager(requireContext())
         productManager = ProductManager.getInstance(requireContext())
-        val userRole = sessionManager.fetchUserRole()
 
-        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
-        (activity as AppCompatActivity).supportActionBar?.title = "Productos"
+        setupViews()
+        setupObservers()
 
-        if (userRole == "admin") {
-            binding.fabAddProduct.isVisible = true
-            binding.fabAddProduct.setOnClickListener {
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, CreateProductFragment())
-                    .addToBackStack(null)
-                    .commit()
-            }
-        } else {
-            binding.fabAddProduct.isVisible = false
-        }
-
-        productAdapter = ProductAdapter(userRole) { product ->
-            if (userRole == "admin") {
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, EditProductFragment(product))
-                    .addToBackStack(null)
-                    .commit()
-            } else {
-                productManager.addToCart(product)
-                Toast.makeText(requireContext(), "${product.name} añadido al carrito", Toast.LENGTH_SHORT).show()
-            }
-        }
-        binding.productsRecyclerView.adapter = productAdapter
-        binding.productsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-        productManager.productListState.observe(viewLifecycleOwner) { state ->
-            binding.progressBar.isVisible = state is ProductListState.Loading
-            binding.productsRecyclerView.isVisible = state is ProductListState.Success
-
-            if (state is ProductListState.Success) {
-                productAdapter.submitList(state.products)
-                binding.emptyTextView.isVisible = state.products.isEmpty()
-            } else {
-                binding.emptyTextView.isVisible = false
-            }
-        }
-
+        // Cargar los productos al iniciar el fragment
         productManager.fetchProducts(lifecycleScope)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.search_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
+    private fun setupViews() {
+        binding.textFieldSearch.editText?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-        val searchItem = menu.findItem(R.id.action_search)
-        val searchView = searchItem.actionView as SearchView
-        searchView.queryHint = "Buscar por nombre..."
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean = false
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                productManager.searchProducts(newText)
-                return true
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                productManager.searchProducts(s.toString())
             }
+
+            override fun afterTextChanged(s: Editable?) {}
         })
+    }
+
+    private fun setupObservers() {
+        productManager.productListState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is ProductListState.Loading -> {
+                    binding.progressBar.isVisible = true
+                    binding.recyclerViewProducts.isVisible = false
+                    binding.textViewError.isVisible = false
+                }
+                is ProductListState.Success -> {
+                    binding.progressBar.isVisible = false
+                    binding.textViewError.isVisible = false
+                    binding.recyclerViewProducts.isVisible = true
+                    binding.recyclerViewProducts.adapter = ProductAdapter(state.products) { product ->
+                        // Añadir al carrito al hacer clic
+                        productManager.addToCart(product)
+                        Toast.makeText(requireContext(), "'${product.name}' añadido al carrito", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                is ProductListState.Error -> {
+                    binding.progressBar.isVisible = false
+                    binding.recyclerViewProducts.isVisible = false
+                    binding.textViewError.isVisible = true
+                    binding.textViewError.text = state.message
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {

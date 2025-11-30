@@ -1,15 +1,14 @@
 package com.tiendasuplementos.app.ui.main.order
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.tiendasuplementos.app.data.repository.OrderRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class OrderManager(context: Context) {
+class OrderManager {
 
-    private val orderRepository = OrderRepository(context)
+    private val orderRepository = OrderRepository()
 
     private val _orderListState = MutableLiveData<OrderListState>()
     val orderListState: LiveData<OrderListState> = _orderListState
