@@ -6,7 +6,7 @@ export default function Layout() {
   return (
     <>
       <Header />
-      <main className="container my-4">
+      <main className="container my-4 page-shell">
         <Outlet />
       </main>
       <Footer />

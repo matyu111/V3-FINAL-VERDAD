@@ -1,45 +1,76 @@
-.modal-overlay {
+
+.modal-confirm-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(124,58,237,0.12), rgba(10,12,14,0.55));
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 2000;
+  backdrop-filter: blur(6px) saturate(1.1);
 }
 
-.modal-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
+.modal-confirm-content {
+  background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(245,241,255,0.96));
+  padding: 22px 28px;
+  border-radius: 12px;
   text-align: center;
-  max-width: 400px;
-  width: 90%;
+  max-width: 520px;
+  width: min(92%, 520px);
+  box-shadow: 0 12px 40px rgba(16, 24, 40, 0.15);
+  position: relative;
+  color: #102030;
+.modal-confirm-content {
+}
+
+.modal-message {
+  font-size: 1rem;
+  line-height: 1.4;
+  color: #24323a;
+  padding: 6px 4px;
 }
 
 .modal-buttons {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 12px;
+  margin-top: 22px;
 }
 
-.btn {
-  padding: 10px 20px;
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
   border: none;
-  border-radius: 4px;
+  font-size: 18px;
+  color: #6b7880;
+  cursor: pointer;
+  padding: 6px;
+}
+
+.modal-confirm-btn {
+  padding: 10px 20px;
+  background-image: var(--primary-gradient);
+  color: white;
+  border: 0;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: 0 10px 30px rgba(124,58,237,0.25), inset 0 -6px 18px rgba(0,0,0,0.08);
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.modal-confirm-btn:hover { transform: translateY(-3px); filter: brightness(1.04); }
+
+.modal-cancel-btn {
+  padding: 8px 18px;
+  background: rgba(255,255,255,0.8);
+  color: #3b2b4a;
+  border: 1px solid rgba(124,58,237,0.12);
+  border-radius: 8px;
   cursor: pointer;
 }
 
-.btn-primary {
-  background-color: #007bff;
-  color: white;
-}
-
-.btn-secondary {
-  background-color: #6c757d;
-  color: white;
-}
+.modal-cancel-btn:hover { background-color: #f4f7f8; }

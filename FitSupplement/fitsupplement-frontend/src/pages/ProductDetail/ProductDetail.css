@@ -91,11 +91,12 @@
 
 .add-to-cart {
   padding: 1rem 2rem;
-  background: #28a745;
-  color: white;
+  background-image: var(--primary-gradient);
+  color: var(--white);
   border: none;
   cursor: pointer;
   border-radius: 4px;
+  box-shadow: var(--primary-glow);
 }
 
 .related-products {

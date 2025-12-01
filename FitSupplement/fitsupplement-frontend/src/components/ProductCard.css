@@ -2,8 +2,8 @@
 
 .product-card {
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border-radius: 14px;
+  box-shadow: 0 18px 40px rgba(30, 7, 60, 0.06), 0 6px 30px rgba(124,58,237,0.06);
   overflow: hidden;
   transition: transform 0.3s ease;
   display: flex;
@@ -39,17 +39,17 @@
   width: auto;
   height: 260px; /* imagen más alta y consistente */
   object-fit: contain;
-  border-radius: 8px;
+  border-radius: 12px;
 }
 
 .product-badge {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: var(--primary-color);
+  background-image: var(--primary-gradient);
   color: white;
-  padding: 4px 8px;
-  border-radius: 4px;
+  padding: 6px 10px;
+  border-radius: 8px;
   font-size: 0.8rem;
 }
 
@@ -88,7 +88,7 @@
 .price {
   font-size: 1.2rem;
   font-weight: bold;
-  color: var(--primary-color);
+  color: var(--primary-color-2);
 }
 
 .old-price {
@@ -102,7 +102,9 @@
 }
 
 .add-to-cart:hover {
-  background-color: darken(var(--primary-color), 10%);
+  background-image: var(--primary-gradient);
+  box-shadow: 0 12px 30px rgba(124,58,237,0.16);
+  transform: translateY(-3px);
   color: white !important;
 }
 

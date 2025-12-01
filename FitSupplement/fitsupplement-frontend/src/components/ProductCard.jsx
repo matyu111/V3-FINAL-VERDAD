@@ -56,6 +56,7 @@ const ProductCard = ({ id, category, price, image, name, description, rating, re
           <div className="product-image">
             <ImageWithFallback
               src={image || getFallbackSrc(category, id)}
+              fallback={() => getFallbackSrc(category, id)}
               alt={name}
               style={{ height: '280px', width: 'auto', maxWidth: '100%', objectFit: 'contain', display: 'block', margin: '0 auto' }}
             />

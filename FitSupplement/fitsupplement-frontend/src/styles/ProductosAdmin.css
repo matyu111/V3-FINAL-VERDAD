@@ -31,14 +31,14 @@ h1 {
   transition: all 0.3s;
 }
 
-.search-input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 0 3px rgba(0,123,255,0.25);
+search-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 6px rgba(124,58,237,0.08);
 }
 
 button {
   padding: 0.75rem 1.5rem;
-  background-color: #007bff;
+  background-image: var(--primary-gradient);
   color: white;
   border: none;
   border-radius: 8px;
@@ -46,16 +46,16 @@ button {
   transition: all 0.3s;
   margin: 0.5rem;
   font-weight: bold;
+  box-shadow: var(--primary-glow);
 }
 
 button:hover {
-  background-color: #0056b3;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 50px rgba(124,58,237,0.12);
 }
 
 button.active {
-  background-color: #28a745;
+  background-image: var(--primary-gradient);
 }
 
 /* Botón de filtro de stock crítico: asegurar visibilidad distinta */
@@ -64,7 +64,7 @@ button.active {
   color: #fff;
 }
 .filter-btn.active {
-  background-color: #28a745; /* verde cuando activo */
+  background-image: var(--primary-gradient);
 }
 
 /* Asegurar que los botones en controles no se oculten */
@@ -75,11 +75,12 @@ button.active {
 }
 
 .add-btn {
-  background-color: #28a745;
+  background-image: var(--primary-gradient);
 }
 
 .add-btn:hover {
-  background-color: #218838;
+  transform: translateY(-2px);
+  box-shadow: var(--primary-glow);
 }
 
 .admin-table {
@@ -107,8 +108,8 @@ th, td {
 }
 
 th {
-  background: #007bff;
-  color: white;
+  background-image: var(--primary-gradient);
+  color: var(--white);
   font-weight: bold;
 }
 
@@ -171,11 +172,11 @@ td button {
 
 /* Botones uniformes (coherentes con Usuarios.css) */
 .btn-toggle { color: #fff; }
-.btn-success { background: #27ae60; }
+.btn-success { background-image: var(--primary-gradient); color: var(--white); box-shadow: var(--primary-glow); }
 .btn-danger { background: #e67e22; }
 .btn-edit { background: #f1c40f; color: #2c3e50; }
 .btn-delete { background: #e74c3c; color: #fff; }
-.btn-save { background: #2ecc71; color: #fff; }
+.btn-save { background-image: var(--primary-gradient); color: var(--white); box-shadow: var(--primary-glow); }
 .btn-cancel { background: #95a5a6; color: #fff; }
 
 @keyframes fadeIn {

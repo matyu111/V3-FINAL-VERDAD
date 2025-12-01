@@ -117,7 +117,7 @@
 .price {
   font-size: 1.2rem;
   font-weight: bold;
-  color: #28a745;
+  color: var(--primary-color-2);
 }
 
 .old-price {
@@ -129,18 +129,18 @@
 .add-to-cart {
   width: 100%;
   padding: 12px; /* Aumentado padding para mejor apariencia */
-  background-color: #007bff;
+  background-image: var(--primary-gradient);
   color: white;
   border: none;
   border-radius: 5px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .add-to-cart:hover {
-  background-color: #0056b3;
-  transform: scale(1.02);
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 14px 40px var(--primary-glow, rgba(123,42,232,0.12));
 }
 
 .slick-arrow {

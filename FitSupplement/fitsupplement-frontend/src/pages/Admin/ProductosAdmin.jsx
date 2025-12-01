@@ -251,7 +251,7 @@ const ProductosAdmin = () => {
               boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)'
             }}
           >
-            <h2 style={{ color: '#2c3e50', marginBottom: '1.5rem', borderBottom: '2px solid #3498db', paddingBottom: '0.5rem' }}>
+            <h2 style={{ color: '#2c3e50', marginBottom: '1.5rem', borderBottom: '2px solid var(--primary-color)', paddingBottom: '0.5rem' }}>
               {editingProduct ? 'Editar Producto' : 'Nuevo Producto'}
             </h2>
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -386,7 +386,7 @@ const ProductosAdmin = () => {
                 type="submit"
                 style={{
                   padding: '0.75rem 1.5rem',
-                  backgroundColor: '#27ae60',
+                  backgroundColor: 'var(--primary-color)',
                   color: 'white',
                   border: 'none',
                   borderRadius: '4px',
@@ -395,8 +395,8 @@ const ProductosAdmin = () => {
                   transition: 'all 0.3s',
                   fontWeight: 500
                 }}
-                onMouseEnter={(e) => e.target.style.backgroundColor = '#229954'}
-                onMouseLeave={(e) => e.target.style.backgroundColor = '#27ae60'}
+                onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--primary-color-2)'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = 'var(--primary-color)'}
                 disabled={!!formData.imagen && !imageLoadOk}
               >
                 Guardar

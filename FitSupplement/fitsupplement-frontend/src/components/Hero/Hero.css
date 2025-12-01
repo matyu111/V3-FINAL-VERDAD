@@ -1,9 +1,9 @@
 /* Hero.css - Estilos optimizados para el componente Hero */
 
 .hero {
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438') center/cover no-repeat;
-  color: white;
-  padding: 100px 0;
+  /* Keep the overall page background white but give the hero a soft, futuristic purple accent */
+  background: transparent;
+  padding: 80px 0 60px 0;
   text-align: center;
 }
 
@@ -14,36 +14,54 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+  gap: 30px;
 }
 
 .hero-text {
   flex: 1;
   padding-right: 40px;
+  text-align: left;
+  color: var(--secondary-color);
+  /* Floating white panel for copy with purple neon border */
+  background: var(--white);
+  border-radius: 14px;
+  padding: 40px;
+  box-shadow: 0 20px 40px rgba(30, 7, 60, 0.06), 0 6px 30px rgba(124,58,237,0.08);
+  border: 1px solid rgba(124,58,237,0.06);
 }
 
 .hero-text h2 {
-  font-size: 2.5rem;
+  font-size: 2.4rem;
   margin-bottom: 20px;
+  color: var(--secondary-color);
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .hero-text p {
-  font-size: 1.2rem;
+  font-size: 1.05rem;
   margin-bottom: 30px;
+  color: var(--gray-700);
 }
 
 .hero-buttons {
   display: flex;
-  gap: 20px;
+  gap: 16px;
 }
 
 .hero-image {
   flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .hero-image img {
-  max-width: 100%;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 440px;
+  border-radius: 14px;
+  box-shadow: 0 30px 70px rgba(16,9,34,0.14), 0 6px 30px rgba(124,58,237,0.08);
+  border: 6px solid rgba(124,58,237,0.06);
+  transform: translateX(40px) translateY(-10px);
 }
 
 /* Media Queries para responsividad */
@@ -57,4 +75,16 @@
     padding-right: 0;
     margin-bottom: 30px;
   }
+}
+
+/* Small touch: add a subtle decorative dot pattern behind hero to feel futuristic */
+.hero::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 40px;
+  margin-top: 12px;
+  background: radial-gradient(rgba(124,58,237,0.03) 1px, transparent 1px);
+  background-size: 18px 18px;
+  opacity: 0.9;
 }

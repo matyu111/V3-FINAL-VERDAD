@@ -1,17 +1,23 @@
 @import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
 
 /* Design tokens y estilos globales responsivos */
 :root {
   /* Tipografía base */
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --font-sans: 'Poppins', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: var(--font-sans);
   line-height: 1.5;
   font-weight: 400;
 
   /* Paleta y tokens */
-  --primary-color: #4f46e5;
-  --secondary-color: #1f2937;
-  --accent-color: #ef4444;
-  --success-color: #22c55e;
+  /* Purple / psychedelic color tokens */
+  --primary-color: #7c3aed; /* vivid purple */
+  --primary-color-2: #b91cff; /* magenta highlight */
+  --primary-gradient: linear-gradient(135deg,#7c3aed 0%, #b91cff 50%, #ff6ec7 100%);
+  --primary-glow: 0 8px 30px rgba(124,58,237,0.28), 0 0 40px rgba(185,28,255,0.08);
+  --secondary-color: #0b1220; /* darker text for contrast */
+  --accent-color: #ff6ec7; /* neon magenta accent */
+  --success-color: rgba(124,58,237,0.12);
   --danger-color: #e11d48;
   --white: #ffffff;
   --black: #000000;
@@ -27,6 +33,9 @@
   --gray-800: #1f2937;
 
   --background-light: #f8fafc;
+  /* Page accent (keeps center white, faint purple at edges) */
+  --page-accent: #f7f2ff; /* very pale lavender */
+  --page-accent-gradient: radial-gradient(circle at 50% 10%, rgba(255,255,255,1) 58%, rgba(247,242,255,0.95) 72%, rgba(247,242,255,0.9) 100%);
   --border-color: #e5e7eb;
   --border-radius: 10px;
   --transition: all 0.25s ease;
@@ -65,6 +74,9 @@ body {
   min-width: 320px;
   min-height: 100vh;
   box-sizing: border-box;
+  /* Keep overall page white in the center to preserve the 'white background' requirement
+     while using a subtle purple accent around the edges so the page 'resalta' */
+  background-image: var(--page-accent-gradient);
   background-color: var(--white);
   color: var(--secondary-color);
 }
@@ -86,23 +98,26 @@ h1 {
 
 /* Evitar conflictos con .btn de Bootstrap */
 button:not(.btn) {
-  border-radius: var(--border-radius);
-  border: 1px solid transparent;
+  border-radius: 9999px;
+  border: none;
   padding: 0.6em 1.2em;
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600;
   font-family: inherit;
-  background-color: var(--primary-color);
   color: var(--white);
+  background-image: var(--primary-gradient);
+  box-shadow: var(--primary-glow);
   cursor: pointer;
   transition: var(--transition);
 }
 button:not(.btn):hover {
-  filter: brightness(0.95);
+  transform: translateY(-2px) scale(1.02);
+  filter: saturate(1.05) brightness(1.03);
 }
 button:not(.btn):focus,
 button:not(.btn):focus-visible {
-  outline: 3px auto rgba(79,70,229,0.4);
+  outline: 3px auto rgba(124,58,237,0.28);
+  box-shadow: 0 0 0 6px rgba(124,58,237,0.12);
 }
 
 /* Tema siempre claro: ignoramos el modo oscuro del sistema */
@@ -114,8 +129,26 @@ html, body {
 #root {
   width: 100%;
   min-height: 100vh;
+  /* make main content area feel like a crisp white sheet floating on a subtle purple field */
+  background: transparent;
+  padding-top: 0.5rem;
   display: flex;
   flex-direction: column;
+}
+
+/* Wrapper helpers that components can use when you want a clear white panel */
+.page-shell {
+  width: 100%;
+  background: var(--white);
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(30, 7, 60, 0.08), var(--primary-glow);
+  padding: 2.25rem;
+  margin: 1.25rem auto;
+}
+
+/* Constrain main container for better reading line-length */
+.container {
+  max-width: 1200px;
 }
 
 /* Form controls: asegurar contraste estable en cualquier equipo/tema */
@@ -123,6 +156,24 @@ input, select, textarea {
   background-color: #ffffff;
   color: #1f2937; /* var(--secondary-color) */
   border: 1px solid var(--border-color);
+}
+
+/* Override bootstrap primary/secondary buttons for a consistent futuristic purple theme */
+.btn-primary, .btn-primary:visited {
+  color: var(--white);
+  background-image: var(--primary-gradient);
+  border: none;
+  box-shadow: var(--primary-glow);
+}
+.btn-primary:hover, .btn-primary:focus {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 18px 40px rgba(124,58,237,0.16);
+}
+.btn-secondary {
+  background: linear-gradient(90deg, rgba(0,0,0,0.05), rgba(0,0,0,0.02));
+  color: var(--gray-800);
+  border: 1px solid rgba(124,58,237,0.06);
+  box-shadow: 0 6px 18px rgba(16,9,34,0.04);
 }
 
 /* Soporte para Header alternativo basado en Bootstrap: dibuja el icono hamburguesa */
@@ -158,3 +209,58 @@ input, select, textarea {
     z-index: 1100;
   }
 }
+
+/* ===== Global overrides to replace leftover blue accents with purple theme ===== */
+/* Table headers */
+.admin-table th,
+.admin-table thead th,
+.table thead th,
+thead th {
+  background-image: var(--primary-gradient) !important;
+  background-color: var(--primary-color) !important;
+  color: var(--white) !important;
+  border-color: transparent !important;
+}
+
+/* Stat numbers and small blue highlights */
+.stat-card p,
+.stat-card .value,
+.highlight-blue {
+  color: var(--primary-color-2) !important;
+}
+
+/* Replace specific blue buttons used in pages */
+.quantity-control button,
+.coupon-section button,
+.product-card button,
+.controls button,
+.admin-products button,
+.cart-summary .coupon-section button {
+  background-image: var(--primary-gradient) !important;
+  background-color: var(--primary-color) !important;
+  color: var(--white) !important;
+  border: none !important;
+  box-shadow: var(--primary-glow) !important;
+}
+.quantity-control button:disabled {
+  background-color: #ccc !important;
+  box-shadow: none !important;
+}
+
+/* Links and small accents */
+a, .nav-link, .blog-hero a, .read-the-docs {
+  color: var(--primary-color) !important;
+}
+
+/* Input focus should use purple */
+input:focus, .search-input:focus, .search-input:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 6px rgba(124,58,237,0.08) !important;
+  border-color: var(--primary-color) !important;
+}
+
+/* Fallback: replace inline style color occurrences (best-effort) */
+*[style*="#007bff"] {
+  color: var(--primary-color) !important;
+}
+

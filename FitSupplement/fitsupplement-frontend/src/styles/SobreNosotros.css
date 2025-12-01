@@ -6,8 +6,8 @@
 }
 
 .about-hero {
-  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-  color: white;
+  background: var(--primary-gradient);
+  color: var(--white);
   padding: 4rem 0;
   text-align: center;
 }
@@ -78,7 +78,7 @@
 .mission-card h3 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
-  color: #4CAF50;
+  color: var(--primary-color);
 }
 
 .mission-card p, .mission-card ul {
@@ -141,7 +141,7 @@
 }
 
 .member-role {
-  color: #4CAF50;
+  color: var(--primary-color);
   margin-bottom: 1rem;
 }
 

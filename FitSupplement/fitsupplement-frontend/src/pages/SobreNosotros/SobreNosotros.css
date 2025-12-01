@@ -6,8 +6,8 @@
 }
 
 .about-hero {
-  background: linear-gradient(to right, #4e54c8, #8f94fb);
-  color: white;
+  background: var(--primary-gradient);
+  color: var(--white);
   padding: 80px 0;
   text-align: center;
 }
@@ -189,7 +189,7 @@
 .stat-number {
   font-size: 2.5rem;
   font-weight: bold;
-  color: #4e54c8;
+  color: var(--primary-color);
   margin-bottom: 10px;
 }
 

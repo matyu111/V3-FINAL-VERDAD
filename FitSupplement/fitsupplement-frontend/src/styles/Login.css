@@ -1,5 +1,5 @@
 .login-section {
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: var(--page-accent-gradient, linear-gradient(180deg, #ffffff 0%, rgba(246,240,255,0.7) 100%));
   min-height: 100vh;
   padding: 2rem 0;
 }
@@ -88,7 +88,7 @@
 }
 
 .forgot-password {
-  color: #007bff;
+  color: var(--primary-color, #7b2ae8);
   text-decoration: none;
   font-size: 0.9rem;
 }
@@ -100,17 +100,19 @@
 .btn-login {
   width: 100%;
   padding: 1rem;
-  background: #007bff;
+  background: var(--primary-gradient, linear-gradient(90deg, #7b2ae8, #b86cf2));
   color: white;
   border: none;
   border-radius: 6px;
   font-size: 1rem;
   cursor: pointer;
   margin-bottom: 1.5rem;
+  box-shadow: 0 6px 20px var(--primary-glow, rgba(123,42,232,0.18));
 }
 
 .btn-login:hover {
-  background: #0056b3;
+  background: linear-gradient(90deg, var(--primary-color-2, #9a4bf0), var(--primary-color, #7b2ae8));
+  transform: translateY(-1px);
 }
 
 .login-divider {
@@ -172,7 +174,7 @@
 }
 
 .btn-facebook .social-icon {
-  color: #4267B2;
+  color: var(--primary-color-2, #b86cf2);
 }
 
 .login-footer {
@@ -180,7 +182,7 @@
 }
 
 .login-footer a {
-  color: #007bff;
+  color: var(--primary-color, #7b2ae8);
   text-decoration: none;
   font-weight: 500;
 }

@@ -73,7 +73,7 @@
 
 .form-group input:focus,
 .form-group select:focus {
-  border-color: #4CAF50;
+  border-color: var(--primary-color);
   outline: none;
 }
 
@@ -122,8 +122,8 @@
 .strength-bar.level-0::before { width: 0%; background: #f44336; }
 .strength-bar.level-1::before { width: 25%; background: #f44336; }
 .strength-bar.level-2::before { width: 50%; background: #ff9800; }
-.strength-bar.level-3::before { width: 75%; background: #2196f3; }
-.strength-bar.level-4::before { width: 100%; background: #4CAF50; }
+.strength-bar.level-3::before { width: 75%; background: var(--primary-color, #7b2ae8); }
+.strength-bar.level-4::before { width: 100%; background: var(--primary-color); }
 
 .checkbox-group {
   display: flex;
@@ -137,19 +137,20 @@
 }
 
 .btn-register {
-  background: #4CAF50;
-  color: white;
+  background-image: var(--primary-gradient);
+  color: var(--white);
   padding: 1rem;
   border: none;
   border-radius: 8px;
   font-size: 1.1rem;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: transform 0.2s;
   margin-top: 1rem;
+  box-shadow: var(--primary-glow);
 }
 
 .btn-register:hover {
-  background: #45a049;
+  transform: translateY(-2px);
 }
 
 .register-footer {
@@ -159,14 +160,14 @@
 }
 
 .register-footer a {
-  color: #4CAF50;
+  color: var(--primary-color);
   text-decoration: none;
   font-weight: 600;
 }
 
 .register-benefits {
-  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-  color: white;
+  background: var(--primary-gradient);
+  color: var(--white);
   padding: 3rem;
   width: 40%;
   display: flex;

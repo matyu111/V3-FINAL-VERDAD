@@ -29,7 +29,7 @@
 
 .stat-card p {
   font-size: 24px;
-  color: #007bff;
+  color: var(--primary-color-2);
 }
 
 .controls {
@@ -61,8 +61,8 @@
 }
 
 .admin-table th {
-  background-color: #007bff;
-  color: white;
+  background-image: var(--primary-gradient);
+  color: var(--white);
 }
 
 .admin-table tr:hover {

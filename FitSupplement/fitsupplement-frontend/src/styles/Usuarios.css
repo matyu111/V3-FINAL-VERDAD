@@ -34,7 +34,7 @@
 
 .add-btn {
   padding: 0.75rem 1.5rem;
-  background: #3498db;
+  background-image: var(--primary-gradient);
   color: white;
   border: none;
   border-radius: 6px;
@@ -43,7 +43,8 @@
 }
 
 .add-btn:hover {
-  background: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: var(--primary-glow);
 }
 
 .admin-table {
@@ -97,11 +98,11 @@ button:hover {
 }
 
 .btn-toggle { color: #fff; }
-.btn-success { background: #27ae60; }
+.btn-success { background-image: var(--primary-gradient); color: var(--white); box-shadow: var(--primary-glow); }
 .btn-danger { background: #e67e22; }
 .btn-edit { background: #f1c40f; color: #2c3e50; }
 .btn-delete { background: #e74c3c; color: #fff; }
-.btn-save { background: #2ecc71; color: #fff; }
+.btn-save { background-image: var(--primary-gradient); color: var(--white); box-shadow: var(--primary-glow); }
 .btn-cancel { background: #95a5a6; color: #fff; }
 
 /* Modal */
@@ -133,7 +134,7 @@ button:hover {
 .modal-content h2 {
   color: #2c3e50;
   margin-bottom: 1.5rem;
-  border-bottom: 2px solid #3498db;
+  border-bottom: 2px solid var(--primary-color);
   padding-bottom: 0.5rem;
 }
 
@@ -158,8 +159,8 @@ button:hover {
 .modal-content textarea:focus,
 .modal-content select:focus {
   outline: none;
-  border-color: #3498db;
-  box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 8px rgba(124,58,237,0.12);
 }
 
 .modal-content textarea {
@@ -182,12 +183,13 @@ button:hover {
 }
 
 .modal-content .btn-save {
-  background: #27ae60;
-  color: white;
+  background-image: var(--primary-gradient);
+  color: var(--white);
+  box-shadow: var(--primary-glow);
 }
 
 .modal-content .btn-save:hover {
-  background: #229954;
+  transform: translateY(-2px);
 }
 
 .modal-content .btn-cancel {
