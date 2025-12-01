@@ -1,0 +1,276 @@
+# ESPECIFICACIÓN DE REQUISITOS DE SOFTWARE (ERS)
+
+Versión: 2025-12-01
+Proyecto: NeuroVision Networks (FitSupplement)
+
+---
+
+**Resumen y alcance de esta actualización**
+Este documento actualiza la ERS previa para reflejar los cambios implementados recientemente en el proyecto (frontend React + Vite y ajustes relacionados en el repositorio). Los puntos clave añadidos o modificados se refieren al tema visual ("morado futurístico"), la arquitectura de fallback de imágenes, tokens globales de estilo, actualizaciones de README (credenciales de prueba) y ajustes de UI/UX para eliminar estilos legacy (azules/verde). También incluye criterios de aceptación nuevos para estos cambios.
+
+## 1. Introducción
+
+1.1. Propósito
+
+Este documento define los requisitos funcionales y no funcionales del sistema "NeuroVision Networks" (tienda online de suplementos deportivos). Está dirigido al equipo de desarrollo, QA, administradores y stakeholders. Contiene además las actualizaciones implementadas hasta la fecha: diseño visual temático, mejora en carga de imágenes, y tokens de estilo globales.
+
+1.2. Ámbito del sistema
+
+- Qué hará el sistema (resumen):
+
+  - Permitir a usuarios explorar y comprar suplementos deportivos.
+  - Mantener un carrito de compras con persistencia de datos por sesión/usuario.
+  - Proveer panel de administración donde se gestionan productos, usuarios y pedidos.
+  - Publicar artículos en un blog integrado.
+  - Exponer API REST para operaciones de productos, autenticación y pedidos (ver endpoints).
+
+- Qué no hará el sistema:
+
+  - No procesará pagos reales (solo simulación/flujo de checkout para pruebas).
+  - No integrará por ahora con proveedores de envío externos ni gestionará inventario en tiempo real.
+
+  1.3. Definiciones, acrónimos y abreviaturas
+
+- ERS: Especificación de Requisitos de Software
+- JWT: JSON Web Token
+- API: Application Programming Interface
+- UI: User Interface
+- CSS: Cascading Style Sheets
+- Vite: Bundler/Dev server para frontend
+
+  1.4. Referencias
+
+- Repositorio de código: (remoto del proyecto)
+- Archivo de seed: `backend/sql/seed_mysql.sql`
+- README del proyecto: `README.md`
+
+  1.5. Visión general del documento
+
+Este documento está organizado en: descripción general, requisitos detallados (funcionales y no funcionales), interfaz, matriz de trazabilidad y criterios de aceptación. Además incorpora un apartado que documenta los cambios recientes y las pruebas asociadas.
+
+---
+
+## 2. Descripción General
+
+2.1. Perspectiva del producto
+
+El producto es una aplicación web independiente (single-page app) con backend REST. Componentes principales:
+
+- Frontend: React + Vite (routeado, componentes, CSS modular)
+- Backend: Spring Boot (API REST, seguridad con JWT, persistencia en MySQL)
+- Base de datos: MySQL (esquema y seed en `backend/sql/seed_mysql.sql`)
+
+  2.2. Funciones del producto (resumen)
+
+- Catálogo de productos con filtrado por categoría
+- Vista de detalle de producto
+- Carrito persistente y proceso de checkout (simulado)
+- Autenticación/Autorización (JWT)
+- Panel Admin: crear/editar/eliminar productos, gestionar usuarios y ver pedidos
+- Blog con artículos estáticos o gestionables desde Admin
+- Sistema de imágenes con fallback local para productos
+
+  2.3. Características de los usuarios
+
+Perfiles principales:
+
+- Administrador: gestiona productos, usuarios y pedidos.
+- Usuario registrado (cliente): compra productos, historial de pedidos, carrito.
+- Usuario anónimo: navega catálogo y añade al carrito (si se registra el carrito se asocia).
+
+  2.4. Restricciones
+
+- Tecnología base: Java 17 + Spring Boot en backend; Node.js 18+ y Vite en frontend.
+- Políticas de la empresa y seguridad: contraseñas en BCrypt, uso de JWT para sesiones.
+- No se cargan imágenes desde el sistema si las URLs externas devuelven error (se usará fallback local).
+
+  2.5. Suposiciones y dependencias
+
+- MySQL 8+ estará disponible para el perfil por defecto.
+- Variables de entorno y `VITE_API_URL` configuradas para apuntar al backend correcto.
+
+  2.6. Requisitos futuros (esbozo)
+
+- Integración con pasarelas de pago (entorno sandbox)
+- Integración con servicios de envío y tracking
+- Panel estadísticas/analytics
+
+---
+
+## 3. Requisitos Específicos (actualizados)
+
+> Nota: se numeran requisitos funcionales (RF) para trazabilidad.
+
+### 3.1 Interfaces
+
+3.1.1 Interfaces de usuario (UI)
+
+- La UI está compuesta por páginas: inicio, catálogo/productos, detalle, carrito, checkout, registro/login, perfil, admin, blog.
+- Se introdujo un tema visual "morado futurístico":
+
+  - Variables CSS globales (`:root`) con tokens: `--primary-color`, `--primary-gradient`, `--primary-glow`, `--white`, `--page-accent-gradient`, etc.
+  - Utilidad `.page-shell` para enmarcar el contenido central en fondo blanco con borde suave y acento del tema.
+  - Todos los componentes deben respetar estas variables en lugar de colores hard-coded para garantizar coherencia.
+
+  3.1.2 Interfaces de software (APIs)
+
+Listado de endpoints relevantes (backend):
+
+- `GET /api/products` — obtener lista de productos
+- `GET /api/products/{id}` — detalle de producto
+- `GET /api/products/category/{categoria}` — productos por categoría
+- `POST /api/auth/login` — autenticación (retorna JWT)
+- `POST /api/auth/register` — registro de usuario
+- `POST /api/orders` — crear pedido
+- Endpoints admin: `POST/PUT/DELETE /api/products`, `GET /api/users`, etc.
+
+  3.1.3 Interfaces de comunicación
+
+- Cliente ↔ Backend sobre HTTP(S) con JSON. El dev server de Vite usa proxy `/api` hacia backend en `http://localhost:8081`.
+
+### 3.2 Requisitos funcionales (RF)
+
+RF-01 — Mostrar catálogo de productos
+
+- Actor: Usuario
+- Descripción: Mostrar lista con paginación/filtrado por categoría.
+- Criterio de aceptación: Al abrir /productos, se muestran tarjetas con imagen (o fallback), nombre, precio y botón "Agregar".
+
+RF-02 — Detalle de producto
+
+- Actor: Usuario
+- Descripción: Visualizar información completa y galería (si aplica).
+
+RF-03 — Carrito y checkout
+
+- Actor: Usuario
+- Descripción: Añadir/quitar productos, ver total, proceder a checkout (simulación de pago).
+- Criterio de aceptación: Agregar producto actualiza contador y total (tests automatizados/manuales).
+
+RF-04 — Autenticación/registro
+
+- Actor: Usuario
+- Descripción: Registro y login con email/contraseña; contraseñas almacenadas con BCrypt.
+
+RF-05 — Admin: CRUD de productos
+
+- Actor: Administrador
+- Descripción: Crear, editar, inhabilitar/activar productos.
+- Criterio de aceptación: Producto creado aparece en catálogo; producto inhabilitado no es visible al cliente.
+
+RF-06 — Fallback de imágenes garantizado
+
+- Actor: Sistema
+- Descripción: El frontend debe mostrar siempre una imagen en las tarjetas de producto:
+  - Mostrar inmediatamente una imagen local por categoría/ID (bundled assets en `src/assets/productoN.*`) como fallback visible.
+  - Pre-cargar la URL remota (si existe) en background y reemplazar la imagen solo cuando la carga sea exitosa.
+  - Si la URL remota falla (404/CORS/error de red), mantener el fallback local.
+- Criterio de aceptación: En condiciones offline o con URLs rotas, las tarjetas muestran la imagen local; cuando la imagen remota está disponible, la tarjeta la muestra tras carga sin parpadeo.
+
+### 3.3 Requisitos no funcionales (NFR) — actualizados
+
+3.3.1 Rendimiento
+
+- P95 de cargas de páginas principales < 1.5s en entorno de desarrollo con conexión local.
+- La galería y pre-carga de imágenes deben hacerse de forma asíncrona para no bloquear render.
+
+  3.3.2 Seguridad
+
+- Contraseñas: BCrypt (backend)
+- Autenticación: JWT con expiración configurable.
+- No exponer claves ni contraseñas en repositorio (README puede contener credenciales de prueba solo para desarrollo local).
+
+  3.3.3 Fiabilidad y Disponibilidad
+
+- Las funcionalidades críticas (login, compra, admin) deben tener tests básicos y manejo de errores (mensajes amistosos en UI).
+
+  3.3.4 Mantenibilidad
+
+- Uso de variables CSS globales para facilitar cambios de tema.
+- Componentes React reutilizables (ej. `ImageWithFallback`) para centralizar lógica de imágenes.
+
+  3.3.5 Portabilidad
+
+- Frontend: compatible con navegadores modernos (Chrome, Edge, Firefox). Mobile responsive.
+- Backend: Java 17, empaquetado con Maven.
+
+---
+
+## 4. Cambios recientes y justificación técnica (resumen)
+
+- Tema morado futurístico
+
+  - Añadidos tokens CSS globales en `src/global.css` y utilidades (`.page-shell`) para mantener el centro de la página blanco y los acentos morados.
+  - Reemplazo de apariencias legacy (azul/verde) por `--primary-color` / `--primary-gradient`.
+
+- Sistema de imágenes y fallback
+
+  - Nuevo componente `ImageWithFallback.jsx` (frontend): muestra primero el fallback local por categoría/ID, pre-carga la imagen remota y la sustituye solo si la carga es exitosa; en caso contrario mantiene el fallback.
+  - Fallback público: `public/images/product-placeholder.svg` y assets locales en `src/assets/producto1.jpg...producto7.jpg`.
+  - Evitar imports de assets inexistentes para prevenir errores de Vite (solución aplicada).
+
+- Accesibilidad y UX
+
+  - Botones y controles recibieron sombras/glow temáticos y micro-interacciones (hover/press) para mejorar percepción del tema.
+
+- README
+  - Se añadió sección "Credenciales de prueba" con dos cuentas (admin y usuario normal) y notas sobre hashes BCrypt.
+
+---
+
+## 5. Matriz de Trazabilidad (actualizada)
+
+| Requisito |    Página/Template | Componente/Archivo                                            | Rol             |
+| --------- | -----------------: | ------------------------------------------------------------- | --------------- |
+| RF-01     |       `/productos` | `src/pages/Products` / `ProductCard.jsx`                      | Cliente         |
+| RF-02     |     `/product/:id` | `src/pages/ProductDetail`                                     | Cliente         |
+| RF-03     |         `/carrito` | `src/pages/Carrito` / `CartContext.jsx`                       | Cliente         |
+| RF-04     |            `/auth` | `src/context/AuthContext.jsx`, `backend` auth endpoints       | Cliente/Backend |
+| RF-05     | `/admin/productos` | `src/pages/Admin/ProductosAdmin.jsx`, backend admin endpoints | Administrador   |
+| RF-06     |       `/productos` | `src/components/ImageWithFallback.jsx`                        | Sistema         |
+
+---
+
+## 6. Criterios de Aceptación (añadidos/actualizados)
+
+- Tema: Las páginas principales muestran el tema morado, el contenido central está sobre fondo blanco y no existen restos de azul/verde en los controles principales.
+- Imágenes: Con URLs externas rotas, las tarjetas de producto muestran inmediatamente un fallback local; cuando la imagen remota es válida, se reemplaza sin destellos molestos.
+- Admin CRUD: El administrador puede crear/editar/productos y cambios aparecen en el catálogo (ver RF-05).
+- Seguridad: Contraseñas del backend almacenadas con BCrypt y JWT funciona (autenticación válida).
+
+---
+
+## 7. Recomendaciones operativas y pasos siguientes
+
+- Ejecutar verificación en navegador:
+
+  1. Arrancar backend: `cd backend && mvn spring-boot:run` (ver `README.md` para perfiles)
+  2. Arrancar frontend: `cd fitsupplement-frontend && npm install && npm run dev -- --port 5177`
+  3. Probar páginas: `/productos`, `/product/:id`, `/carrito`, `/admin/productos`, `/registro`.
+  4. En DevTools revisar logs del `ImageWithFallback` que indican si la carga remota fue satisfactoria o falló.
+
+- Limpieza del repositorio:
+
+  - Añadir `target/` y artefactos pesados a `.gitignore` (o usar Git LFS) para evitar subir jars grandes.
+
+- Seed de usuarios:
+  - Si deseas que las nuevas credenciales de prueba (ver `README.md`) estén en la base de datos por defecto, actualizar `backend/sql/seed_mysql.sql` con hashes BCrypt correspondientes.
+
+---
+
+## 8. Anexos: Credenciales de prueba (recordatorio)
+
+- **Administrador (ejemplo desarrollo)**
+
+  - Email: `admin@local.test`
+  - Contraseña: `A8!vR9u$kQ2z` (usar solo en entorno local)
+
+- **Usuario Normal (ejemplo desarrollo)**
+  - Email: `user@local.test`
+  - Contraseña: `P4s$w0rd!x7Gm`
+
+Para producción, generar contraseñas y secretos apropiados y NUNCA almacenarlos en repositorios públicos.
+
+---
+
+_Fin del documento ERS actualizado (versión 2025-12-01)._
