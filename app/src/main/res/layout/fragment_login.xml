@@ -8,6 +8,14 @@
     android:padding="16dp"
     tools:context=".ui.auth.LoginFragment">
 
+    <ImageView
+        android:id="@+id/imageViewLogo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginBottom="24dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/app_logo" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
