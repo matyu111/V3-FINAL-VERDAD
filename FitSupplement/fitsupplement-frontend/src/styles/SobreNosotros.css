@@ -1,0 +1,158 @@
+/* Estilos para SobreNosotros.jsx */
+
+.about-page {
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+}
+
+.about-hero {
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  color: white;
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.hero-subtitle {
+  font-size: 1.3rem;
+  opacity: 0.9;
+}
+
+.history-section {
+  padding: 4rem 0;
+  background: white;
+}
+
+.history-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.history-text h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.history-text p {
+  margin-bottom: 1.5rem;
+  line-height: 1.7;
+  color: #666;
+}
+
+.history-image img {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.mission-section {
+  padding: 4rem 0;
+  background: #f8f9fa;
+}
+
+.mission-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.mission-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.mission-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.mission-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #4CAF50;
+}
+
+.mission-card p, .mission-card ul {
+  color: #666;
+  line-height: 1.6;
+}
+
+.mission-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.mission-card li {
+  margin-bottom: 0.5rem;
+}
+
+.team-section {
+  padding: 4rem 0;
+}
+
+.team-section h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.team-intro {
+  text-align: center;
+  color: #666;
+  margin-bottom: 3rem;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.team-member {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  overflow: hidden;
+  text-align: center;
+}
+
+.member-photo img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.member-info {
+  padding: 1.5rem;
+}
+
+.member-info h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.member-role {
+  color: #4CAF50;
+  margin-bottom: 1rem;
+}
+
+.member-bio {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .history-content {
+    grid-template-columns: 1fr;
+  }
+}

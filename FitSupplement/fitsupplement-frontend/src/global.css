@@ -1,0 +1,160 @@
+@import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css');
+
+/* Design tokens y estilos globales responsivos */
+:root {
+  /* Tipografía base */
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* Paleta y tokens */
+  --primary-color: #4f46e5;
+  --secondary-color: #1f2937;
+  --accent-color: #ef4444;
+  --success-color: #22c55e;
+  --danger-color: #e11d48;
+  --white: #ffffff;
+  --black: #000000;
+  --text-light: #f8fafc;
+
+  --gray-100: #f1f5f9;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+
+  --background-light: #f8fafc;
+  --border-color: #e5e7eb;
+  --border-radius: 10px;
+  --transition: all 0.25s ease;
+  --box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  --box-shadow-hover: 0 10px 25px rgba(0,0,0,0.15);
+
+  /* Color-scheme por defecto claro (forzado) */
+  color-scheme: light !important;
+  color: #213547;
+  background-color: #ffffff;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Bootstrap variables para reforzar tema claro */
+  --bs-body-bg: #ffffff;
+  --bs-body-color: #212529;
+  --bs-border-color: #dee2e6;
+  --bs-link-color: var(--primary-color);
+}
+
+a {
+  font-weight: 500;
+  color: var(--primary-color);
+  text-decoration: none;
+}
+a:hover {
+  color: #3b34c3;
+}
+
+/* Normaliza body para evitar centrado forzado que rompe cabecera sticky */
+body {
+  margin: 0;
+  display: block;
+  min-width: 320px;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background-color: var(--white);
+  color: var(--secondary-color);
+}
+
+/* Contenedores: dejamos que Bootstrap gestione .container */
+
+/* Imágenes y medios fluidos */
+img, video, iframe {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+h1 {
+  font-size: 2.2rem;
+  line-height: 1.1;
+  margin: 0.5rem 0;
+}
+
+/* Evitar conflictos con .btn de Bootstrap */
+button:not(.btn) {
+  border-radius: var(--border-radius);
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--primary-color);
+  color: var(--white);
+  cursor: pointer;
+  transition: var(--transition);
+}
+button:not(.btn):hover {
+  filter: brightness(0.95);
+}
+button:not(.btn):focus,
+button:not(.btn):focus-visible {
+  outline: 3px auto rgba(79,70,229,0.4);
+}
+
+/* Tema siempre claro: ignoramos el modo oscuro del sistema */
+html, body {
+  background-color: #ffffff !important;
+  color: var(--secondary-color) !important;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Form controls: asegurar contraste estable en cualquier equipo/tema */
+input, select, textarea {
+  background-color: #ffffff;
+  color: #1f2937; /* var(--secondary-color) */
+  border: 1px solid var(--border-color);
+}
+
+/* Soporte para Header alternativo basado en Bootstrap: dibuja el icono hamburguesa */
+.navbar-toggler {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.4rem 0.6rem;
+}
+.navbar-toggler-icon {
+  display: inline-block;
+  width: 22px;
+  height: 2px;
+  background-color: var(--secondary-color);
+  position: relative;
+}
+.navbar-toggler-icon::before,
+.navbar-toggler-icon::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 22px;
+  height: 2px;
+  background-color: var(--secondary-color);
+}
+.navbar-toggler-icon::before { top: -6px; }
+.navbar-toggler-icon::after { top: 6px; }
+
+/* Asegura que el botón del menú del Header personalizado sea visible en móviles */
+@media (max-width: 768px) {
+  .header .btn-menu {
+    display: block !important;
+    color: var(--secondary-color);
+    z-index: 1100;
+  }
+}

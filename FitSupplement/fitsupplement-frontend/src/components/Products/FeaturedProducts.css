@@ -1,0 +1,169 @@
+/* FeaturedProducts.css - Estilos optimizados para el componente FeaturedProducts */
+
+.featured-products {
+  padding: 60px 0;
+  background-color: #f8f9fa;
+}
+
+.featured-products h2 {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 2rem;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 40px; /* Aumentado el espacio entre tarjetas */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.slick-slider {
+  margin: 0 auto;
+}
+
+.slick-track {
+  display: flex !important;
+  align-items: stretch;
+}
+
+.slick-slide {
+  height: auto !important;
+  display: flex !important;
+  align-items: stretch;
+}
+
+.slick-slide > div {
+  flex: 1;
+  display: flex !important;
+}
+
+.product-card {
+  height: 100%;
+  min-height: 400px;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+.product-image {
+  position: relative;
+}
+
+.product-image img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.product-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #ff6b6b;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+}
+
+.product-info {
+  padding: 20px;
+  flex: 1;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.product-description {
+  flex-grow: 1;
+  margin-bottom: 15px;
+}
+
+.product-price {
+  margin-bottom: 15px;
+}
+
+.product-info h3 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.product-description {
+  color: #666;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+  flex-grow: 1;
+}
+
+.product-price {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.price {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #28a745;
+}
+
+.old-price {
+  text-decoration: line-through;
+  color: #999;
+  font-size: 1rem;
+}
+
+.add-to-cart {
+  width: 100%;
+  padding: 12px; /* Aumentado padding para mejor apariencia */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.add-to-cart:hover {
+  background-color: #0056b3;
+  transform: scale(1.02);
+}
+
+.slick-arrow {
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  color: white;
+  top: 50%;
+  transform: translateY(-50%);
+  display: block !important;
+  opacity: 1;
+}
+
+.slick-arrow:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.slick-prev {
+  left: -50px;
+}
+
+.slick-next {
+  right: -50px;
+}

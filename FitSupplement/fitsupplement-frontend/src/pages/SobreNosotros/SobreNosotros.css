@@ -1,0 +1,216 @@
+/* SobreNosotros.css */
+
+.about-page {
+  font-family: 'Arial', sans-serif;
+  color: #333;
+}
+
+.about-hero {
+  background: linear-gradient(to right, #4e54c8, #8f94fb);
+  color: white;
+  padding: 80px 0;
+  text-align: center;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.hero-subtitle {
+  font-size: 1.5rem;
+}
+
+.history-section {
+  padding: 60px 0;
+  background: #f8f9fa;
+}
+
+.history-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+}
+
+.history-text {
+  flex: 1;
+}
+
+.history-text h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.history-image {
+  flex: 1;
+}
+
+.history-image img {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.mission-section {
+  padding: 60px 0;
+}
+
+.mission-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.mission-card {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.mission-icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.mission-card h3 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.mission-card ul {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+}
+
+.mission-card li {
+  margin-bottom: 10px;
+}
+
+.team-section {
+  padding: 60px 0;
+  background: #f8f9fa;
+}
+
+.team-intro {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 1.2rem;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.team-member {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  overflow: hidden;
+  text-align: center;
+}
+
+.member-photo img {
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+}
+
+.member-info {
+  padding: 20px;
+}
+
+.member-role {
+  color: #666;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.member-bio {
+  font-size: 0.9rem;
+}
+
+.certifications-section {
+  padding: 60px 0;
+  background: #ffffff;
+}
+
+.certifications-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.certification-card {
+  background: #f8f9fa;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.cert-icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.certification-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.stats-section {
+  padding: 60px 0;
+  background: #f8f9fa;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 30px;
+  text-align: center;
+}
+
+.stat-item {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #4e54c8;
+  margin-bottom: 10px;
+}
+
+.stat-label {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.member-role {
+  color: #666;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.member-bio {
+  font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .history-content {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300">
+  <rect width="100%" height="100%" fill="#f8fafc" />
+  <g text-anchor="middle" font-family="Inter, Arial, Helvetica, sans-serif" fill="#9aa4b2">
+    <!-- frame -->
+    <rect x="24" y="30" width="252" height="200" rx="10" fill="#ffffff" stroke="#e6eef6" stroke-width="1" />
+
+    <!-- icon circle -->
+    <circle cx="150" cy="95" r="30" fill="#eef6fb" stroke="#cfe6f5" />
+    <path fill="#9aa4b2" d="M145 88h10v14h-10zM130 105l6-8 6 8z"/>
+
+    <!-- label -->
+    <text x="150" y="170" font-size="16" font-weight="600">Imagen</text>
+    <text x="150" y="190" font-size="13" fill="#7f8b96">no disponible</text>
+
+    <!-- subtle footer hint -->
+    <text x="150" y="235" font-size="11" fill="#b6c0c8">(URL externa fallida o ausente)</text>
+  </g>
+</svg>

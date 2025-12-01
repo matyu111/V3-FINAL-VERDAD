@@ -1,0 +1,48 @@
+.gimnasio-section {
+  padding: 2rem;
+  text-align: center;
+  background-color: #f8f9fa;
+  margin: 2rem 0;
+}
+
+.gimnasio-image {
+  display: block;
+  margin: 0 auto 1rem auto;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.gimnasio-section h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.gimnasio-section p {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.gimnasio-section ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1.5rem;
+}
+
+.gimnasio-section li {
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+}
+
+.gimnasio-section button {
+  padding: 0.75rem 1.5rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.gimnasio-section button:hover {
+  background-color: #0056b3;
+}

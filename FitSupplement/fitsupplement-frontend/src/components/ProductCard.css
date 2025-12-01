@@ -1,0 +1,132 @@
+/* Estilos optimizados para ProductCard, extraídos de styles.css y adaptados para Bootstrap */
+
+.product-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  min-height: 520px; /* Altura mayor para evitar desalineación */
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+.product-image {
+  position: relative;
+  flex-shrink: 0;
+  height: 320px; /* Imagen más alta para evitar sensación de recorte */
+  width: 100% !important;
+  max-width: none !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+.product-image img {
+  max-width: 100%;
+  width: auto;
+  height: 260px; /* imagen más alta y consistente */
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.product-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--primary-color);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.product-info {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Permite que la info crezca para llenar el espacio */
+  justify-content: space-between; /* Espacia el contenido */
+}
+
+.product-info h3 {
+  margin: 0 0 10px;
+  font-size: 1.2rem;
+  min-height: 2.2em; /* forzar altura para 1-2 líneas */
+}
+
+.product-description {
+  font-size: 0.9rem;
+  color: #333;
+  margin-bottom: 10px;
+  flex-grow: 1; /* Permite que la descripción se expanda */
+}
+
+.product-rating {
+  display: none; /* ocultar en listado para alinear tarjetas */
+}
+
+.product-price {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.price {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.old-price {
+  text-decoration: line-through;
+  color: var(--text-light);
+}
+
+.add-to-cart {
+  width: 100%;
+  margin-top: auto; /* Empuja el botón al fondo */
+}
+
+.add-to-cart:hover {
+  background-color: darken(var(--primary-color), 10%);
+  color: white !important;
+}
+
+/* Responsividad: tablets */
+@media (max-width: 1024px) {
+  .product-image { height: 280px; }
+  .product-image img { height: 230px; }
+}
+
+/* Responsividad: móviles */
+@media (max-width: 768px) {
+  .product-card { min-height: 440px; }
+  .product-image { height: 240px; }
+  .product-image img { height: 200px; }
+  .product-info h3 { font-size: 1.1rem; }
+  .price { font-size: 1.1rem; }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+  .product-card { min-height: 400px; }
+  .product-image { height: 200px; }
+  .product-image img { height: 170px; }
+  .product-info { padding: 12px; }
+  .product-info h3 { font-size: 1rem; }
+  .price { font-size: 1rem; }
+}

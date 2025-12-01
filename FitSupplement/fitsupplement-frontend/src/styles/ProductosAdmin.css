@@ -1,0 +1,214 @@
+/* Estilos para ProductosAdmin.jsx */
+
+.admin-products {
+  padding: 2rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+  font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.search-input {
+  padding: 0.75rem;
+  width: 300px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+.search-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0,123,255,0.25);
+}
+
+button {
+  padding: 0.75rem 1.5rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin: 0.5rem;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+button.active {
+  background-color: #28a745;
+}
+
+/* Botón de filtro de stock crítico: asegurar visibilidad distinta */
+.filter-btn {
+  background-color: #6c5ce7; /* púrpura para diferenciar */
+  color: #fff;
+}
+.filter-btn.active {
+  background-color: #28a745; /* verde cuando activo */
+}
+
+/* Asegurar que los botones en controles no se oculten */
+.controls button {
+  display: inline-flex;
+  align-items: center;
+  visibility: visible;
+}
+
+.add-btn {
+  background-color: #28a745;
+}
+
+.add-btn:hover {
+  background-color: #218838;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+/* Wrapper para hacer la tabla horizontalmente scrollable en pantallas pequeñas */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Asegurar que haya ancho mínimo para provocar scroll horizontal cuando sea necesario */
+.admin-table { min-width: 900px; }
+
+th, td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+th {
+  background: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+tr:hover {
+  background-color: #f8f9fa;
+}
+
+td button {
+  margin-right: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  animation: slideIn 0.3s;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-content h2 {
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-content input {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.modal-content button {
+  margin-top: 0.5rem;
+}
+
+/* Botones uniformes (coherentes con Usuarios.css) */
+.btn-toggle { color: #fff; }
+.btn-success { background: #27ae60; }
+.btn-danger { background: #e67e22; }
+.btn-edit { background: #f1c40f; color: #2c3e50; }
+.btn-delete { background: #e74c3c; color: #fff; }
+.btn-save { background: #2ecc71; color: #fff; }
+.btn-cancel { background: #95a5a6; color: #fff; }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .search-input {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .admin-table {
+    font-size: 0.9rem;
+  }
+
+  th, td {
+    padding: 0.75rem;
+  }
+
+  .modal-content {
+    width: 95%;
+    padding: 1.5rem;
+  }
+}

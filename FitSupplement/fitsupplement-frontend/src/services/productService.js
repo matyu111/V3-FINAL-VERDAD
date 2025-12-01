@@ -1,0 +1,8 @@
+import api from "./api";
+
+export const getAllProducts = () => api.get("/api/products");
+export const getProductById = (id) => api.get(`/api/products/${id}`);
+export const createProduct = (data) => api.post("/api/products", data);
+export const updateProduct = (id, data) => api.put(`/api/products/${id}`, data);
+// Para operaciones administrativas, usar el endpoint protegido bajo /api/admin
+export const deleteProduct = (id) => api.delete(`/api/admin/products/${id}`);
