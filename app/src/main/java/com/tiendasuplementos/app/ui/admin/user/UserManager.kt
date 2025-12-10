@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.tiendasuplementos.app.data.remote.RetrofitClient
-import com.tiendasuplementos.app.data.remote.dto.UpdateUserStatusRequest
+import com.tiendasuplementos.app.data.remote.dto.UpdateStatusRequest
 import com.tiendasuplementos.app.data.remote.dto.User
 import com.tiendasuplementos.app.ui.state.UiState
 import kotlinx.coroutines.CoroutineScope
@@ -19,7 +19,8 @@ sealed class UserListState {
 
 class UserManager private constructor(context: Context) {
 
-    private val authApiService = RetrofitClient.authApiService
+    // Cambiado a UserApiService que apunta al endpoint correcto (Store API)
+    private val userApiService = RetrofitClient.userApiService
 
     private val _userListState = MutableLiveData<UserListState>()
     val userListState: LiveData<UserListState> = _userListState
@@ -32,7 +33,8 @@ class UserManager private constructor(context: Context) {
         _userListState.value = UserListState.Loading
         scope.launch {
             try {
-                val response = authApiService.getUsers()
+                // Pasamos null como query ya que queremos todos los usuarios
+                val response = userApiService.getUsers(null)
                 if (response.isSuccessful && response.body() != null) {
                     _userListState.postValue(UserListState.Success(response.body()!!))
                 } else {
@@ -51,7 +53,8 @@ class UserManager private constructor(context: Context) {
                 // Convertir el status string a boolean para el DTO
                 // Asumimos que "blocked" significa true, cualquier otra cosa false (active)
                 val isBlocked = newStatus.equals("blocked", ignoreCase = true)
-                val response = authApiService.updateUserStatus(userId, UpdateUserStatusRequest(isBlocked))
+                // Usamos toggleUserStatus del UserApiService con UpdateStatusRequest
+                val response = userApiService.toggleUserStatus(userId, UpdateStatusRequest(isBlocked))
                 
                 if (response.isSuccessful) {
                     _userUpdateState.postValue(UiState.Success(Unit))

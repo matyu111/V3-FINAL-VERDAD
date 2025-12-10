@@ -26,7 +26,7 @@ interface ProductApiService {
         @Part("description") description: RequestBody,
         @Part("price") price: RequestBody,
         @Part("stock") stock: RequestBody,
-        @Part images: List<MultipartBody.Part>
+        @Part image: MultipartBody.Part?
     ): Response<Product>
 
     @DELETE("product/{id}")
@@ -40,7 +40,7 @@ interface ProductApiService {
         @Part("description") description: RequestBody,
         @Part("price") price: RequestBody,
         @Part("stock") stock: RequestBody,
-        @Part images: List<MultipartBody.Part>
+        @Part image: MultipartBody.Part?
     ): Response<Product>
 
     @POST("orders")

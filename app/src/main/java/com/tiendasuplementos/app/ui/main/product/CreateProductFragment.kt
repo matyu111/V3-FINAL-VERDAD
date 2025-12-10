@@ -2,6 +2,7 @@ package com.tiendasuplementos.app.ui.main.product
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -81,11 +82,20 @@ class CreateProductFragment : Fragment() {
         val price = binding.textFieldPrice.editText?.text.toString().toDoubleOrNull()
         val stock = binding.textFieldStock.editText?.text.toString().toIntOrNull()
 
+        Log.d("ProductCreation", "Attempting to save product:")
+        Log.d("ProductCreation", "Name: '$name' (isEmpty: ${name.isEmpty()})")
+        Log.d("ProductCreation", "Description: '$description' (isEmpty: ${description.isEmpty()})")
+        Log.d("ProductCreation", "Price: $price (isNull: ${price == null})")
+        Log.d("ProductCreation", "Stock: $stock (isNull: ${stock == null})")
+        Log.d("ProductCreation", "Image URIs count: ${selectedImageUris.size} (isEmpty: ${selectedImageUris.isEmpty()})")
+
         if (name.isEmpty() || description.isEmpty() || price == null || stock == null || selectedImageUris.isEmpty()) {
+            Log.d("ProductCreation", "Validation failed. Showing toast.")
             Toast.makeText(requireContext(), "Por favor, completa todos los campos y selecciona al menos una imagen", Toast.LENGTH_LONG).show()
             return
         }
 
+        Log.d("ProductCreation", "Validation passed. Calling createProduct.")
         // El ProductManager se actualizará para manejar múltiples URIs
         productManager.createProduct(lifecycleScope, name, description, price, stock, selectedImageUris)
     }

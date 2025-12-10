@@ -2,6 +2,7 @@ package com.tiendasuplementos.app.ui.main.product
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -88,28 +89,58 @@ class EditProductFragment : Fragment() {
     private fun setupObservers() {
         // Observador para creación
         productManager.creationState.observe(viewLifecycleOwner) { state ->
-            if (state is UiState.Success) {
-                Toast.makeText(requireContext(), "Producto creado con éxito", Toast.LENGTH_SHORT).show()
-                productManager.resetCreationState()
-                findNavController().popBackStack()
+             when (state) {
+                is UiState.Loading -> {
+                    // Opcional: mostrar un ProgressBar
+                }
+                is UiState.Success -> {
+                    Toast.makeText(requireContext(), "producto creado", Toast.LENGTH_SHORT).show()
+                    productManager.resetCreationState()
+                    findNavController().popBackStack()
+                }
+                is UiState.Error -> {
+                    Toast.makeText(requireContext(), "Error al crear: ${state.message}", Toast.LENGTH_LONG).show()
+                    productManager.resetCreationState()
+                }
+                else -> { /* No-op */ }
             }
         }
 
         // Observador para actualización
         productManager.updateState.observe(viewLifecycleOwner) { state ->
-            if (state is UiState.Success) {
-                Toast.makeText(requireContext(), "Producto actualizado con éxito", Toast.LENGTH_SHORT).show()
-                productManager.resetUpdateState()
-                findNavController().popBackStack()
+            when (state) {
+                is UiState.Loading -> {
+                     // Opcional: mostrar un ProgressBar
+                }
+                is UiState.Success -> {
+                    Toast.makeText(requireContext(), "Producto actualizado", Toast.LENGTH_SHORT).show()
+                    productManager.resetUpdateState()
+                    findNavController().popBackStack()
+                }
+                 is UiState.Error -> {
+                    Toast.makeText(requireContext(), "Error al actualizar: ${state.message}", Toast.LENGTH_LONG).show()
+                    productManager.resetUpdateState()
+                }
+                else -> { /* No-op */ }
             }
         }
 
         // Observador para borrado
         productManager.deletionState.observe(viewLifecycleOwner) { state ->
-            if (state is UiState.Success) {
-                Toast.makeText(requireContext(), "Producto eliminado con éxito", Toast.LENGTH_SHORT).show()
-                productManager.resetDeletionState()
-                findNavController().popBackStack()
+             when (state) {
+                is UiState.Loading -> {
+                     // Opcional: mostrar un ProgressBar
+                }
+                is UiState.Success -> {
+                    Toast.makeText(requireContext(), "Producto eliminado con éxito", Toast.LENGTH_SHORT).show()
+                    productManager.resetDeletionState()
+                    findNavController().popBackStack()
+                }
+                 is UiState.Error -> {
+                    Toast.makeText(requireContext(), "Error al eliminar: ${state.message}", Toast.LENGTH_LONG).show()
+                    productManager.resetDeletionState()
+                }
+                else -> { /* No-op */ }
             }
         }
     }
@@ -120,8 +151,8 @@ class EditProductFragment : Fragment() {
     }
 
     private fun saveChanges() {
-        val name = binding.textFieldName.editText?.text.toString()
-        val description = binding.textFieldDescription.editText?.text.toString()
+        val name = binding.textFieldName.editText?.text.toString().trim()
+        val description = binding.textFieldDescription.editText?.text.toString().trim()
         val price = binding.textFieldPrice.editText?.text.toString().toDoubleOrNull()
         val stock = binding.textFieldStock.editText?.text.toString().toIntOrNull()
 
@@ -130,7 +161,7 @@ class EditProductFragment : Fragment() {
                 // Actualizar producto existente
                 productManager.updateProduct(lifecycleScope, existingProduct!!.id, name, description, price, stock, selectedImageUris)
             } else {
-                // Crear nuevo producto
+                // Crear nuevo producto (si se llega a este fragment sin un producto)
                 productManager.createProduct(lifecycleScope, name, description, price, stock, selectedImageUris)
             }
         } else {

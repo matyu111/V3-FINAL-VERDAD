@@ -14,9 +14,9 @@ import com.tiendasuplementos.app.util.SessionManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class ProductManager private constructor(context: Context) {
+class ProductManager private constructor(private val context: Context) {
 
-    private val productRepository = ProductRepository(context)
+    private val productRepository = ProductRepository()
     private val sessionManager = SessionManager(context)
 
     // --- State for Products List ---
@@ -83,7 +83,11 @@ class ProductManager private constructor(context: Context) {
         _creationState.value = UiState.Loading
         scope.launch {
             try {
-                val response = productRepository.createProduct(name, description, price, stock, imageUris)
+                val imageUri = imageUris.firstOrNull()
+                val imageBytes = imageUri?.let { context.contentResolver.openInputStream(it)?.readBytes() }
+                val mimeType = imageUri?.let { context.contentResolver.getType(it) }
+
+                val response = productRepository.createProduct(name, description, price, stock, imageBytes, mimeType)
                 if (response.isSuccessful) {
                     _creationState.postValue(UiState.Success(response.body()!!))
                     // Optionally refresh list
@@ -101,7 +105,11 @@ class ProductManager private constructor(context: Context) {
         _updateState.value = UiState.Loading
         scope.launch {
             try {
-                val response = productRepository.updateProduct(productId, name, description, price, stock, imageUris)
+                val imageUri = imageUris.firstOrNull()
+                val imageBytes = imageUri?.let { context.contentResolver.openInputStream(it)?.readBytes() }
+                val mimeType = imageUri?.let { context.contentResolver.getType(it) }
+
+                val response = productRepository.updateProduct(productId, name, description, price, stock, imageBytes, mimeType)
                 if (response.isSuccessful) {
                     _updateState.postValue(UiState.Success(response.body()!!))
                     fetchProducts(this)

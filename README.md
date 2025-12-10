@@ -58,8 +58,8 @@ Aplicación Android para la gestión y venta de suplementos deportivos, con sopo
 
 Si dispones de credenciales de prueba para el administrador o usuario, puedes utilizarlas en la pantalla de Login.
 
-*   **Usuario Admin:** (Si aplica, indicar aquí o en documentación privada)
-*   **Usuario Cliente:** (Si aplica, indicar aquí o en documentación privada)
+*   **Usuario Admin:** (mat.bello@duocuc.cl contraseña:123)
+*   **Usuario Cliente:** (kev.gomez@duocuc.cl contraseña:123)
 
 ## 📁 Estructura del Proyecto
 
